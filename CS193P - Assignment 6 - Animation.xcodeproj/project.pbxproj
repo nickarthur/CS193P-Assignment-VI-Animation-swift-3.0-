@@ -3,27 +3,41 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA23350D1D6CDD3500C3F4DF /* Balls_And_Paddles.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA23350C1D6CDD3500C3F4DF /* Balls_And_Paddles.swift */; };
+		EA2EC8281D6713AC00635EAA /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2EC8271D6713AC00635EAA /* GameView.swift */; };
+		EA33015B1D6B51CC00D41180 /* UIKit Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA33015A1D6B51CC00D41180 /* UIKit Extensions.swift */; };
 		EA8B2B911D62049B00EFF63F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B2B901D62049B00EFF63F /* AppDelegate.swift */; };
 		EA8B2B931D62049B00EFF63F /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B2B921D62049B00EFF63F /* FirstViewController.swift */; };
-		EA8B2B951D62049B00EFF63F /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B2B941D62049B00EFF63F /* SecondViewController.swift */; };
 		EA8B2B981D62049B00EFF63F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8B2B961D62049B00EFF63F /* Main.storyboard */; };
 		EA8B2B9A1D62049B00EFF63F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA8B2B991D62049B00EFF63F /* Assets.xcassets */; };
 		EA8B2B9D1D62049B00EFF63F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8B2B9B1D62049B00EFF63F /* LaunchScreen.storyboard */; };
+		EACBFD6B1D74902200173C1E /* Scrobble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACBFD6A1D74902200173C1E /* Scrobble.swift */; };
+		EAD78BC41D6A04D0008282C2 /* DynamicBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */; };
+		EAD78BC61D6A0D52008282C2 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD78BC51D6A0D52008282C2 /* Board.swift */; };
+		EAF9675D1D68938B00992E0A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF9675C1D68938B00992E0A /* SettingsViewController.swift */; };
+		EAF9675F1D68AC4F00992E0A /* BoardSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF9675E1D68AC4F00992E0A /* BoardSquareView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA23350C1D6CDD3500C3F4DF /* Balls_And_Paddles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Balls_And_Paddles.swift; sourceTree = "<group>"; };
+		EA2EC8271D6713AC00635EAA /* GameView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		EA33015A1D6B51CC00D41180 /* UIKit Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIKit Extensions.swift"; sourceTree = "<group>"; };
 		EA8B2B8D1D62049B00EFF63F /* CS193P - Assignment 6 - Animation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CS193P - Assignment 6 - Animation.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA8B2B901D62049B00EFF63F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA8B2B921D62049B00EFF63F /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		EA8B2B941D62049B00EFF63F /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		EA8B2B971D62049B00EFF63F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA8B2B991D62049B00EFF63F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA8B2B9C1D62049B00EFF63F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EA8B2B9E1D62049B00EFF63F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EACBFD6A1D74902200173C1E /* Scrobble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scrobble.swift; sourceTree = "<group>"; };
+		EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicBehavior.swift; sourceTree = "<group>"; };
+		EAD78BC51D6A0D52008282C2 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		EAF9675C1D68938B00992E0A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		EAF9675E1D68AC4F00992E0A /* BoardSquareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardSquareView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +70,30 @@
 		EA8B2B8F1D62049B00EFF63F /* CS193P - Assignment 6 - Animation */ = {
 			isa = PBXGroup;
 			children = (
-				EA8B2B901D62049B00EFF63F /* AppDelegate.swift */,
+				EA8B2BA41D62051500EFF63F /* Supporting files */,
 				EA8B2B921D62049B00EFF63F /* FirstViewController.swift */,
-				EA8B2B941D62049B00EFF63F /* SecondViewController.swift */,
+				EAF9675C1D68938B00992E0A /* SettingsViewController.swift */,
 				EA8B2B961D62049B00EFF63F /* Main.storyboard */,
-				EA8B2B991D62049B00EFF63F /* Assets.xcassets */,
-				EA8B2B9B1D62049B00EFF63F /* LaunchScreen.storyboard */,
+				EA2EC8271D6713AC00635EAA /* GameView.swift */,
+				EA23350C1D6CDD3500C3F4DF /* Balls_And_Paddles.swift */,
+				EAF9675E1D68AC4F00992E0A /* BoardSquareView.swift */,
+				EAD78BC51D6A0D52008282C2 /* Board.swift */,
+				EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */,
+				EA33015A1D6B51CC00D41180 /* UIKit Extensions.swift */,
+				EACBFD6A1D74902200173C1E /* Scrobble.swift */,
 				EA8B2B9E1D62049B00EFF63F /* Info.plist */,
 			);
 			path = "CS193P - Assignment 6 - Animation";
+			sourceTree = "<group>";
+		};
+		EA8B2BA41D62051500EFF63F /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				EA8B2B901D62049B00EFF63F /* AppDelegate.swift */,
+				EA8B2B991D62049B00EFF63F /* Assets.xcassets */,
+				EA8B2B9B1D62049B00EFF63F /* LaunchScreen.storyboard */,
+			);
+			name = "Supporting files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -106,7 +135,7 @@
 				};
 			};
 			buildConfigurationList = EA8B2B881D62049B00EFF63F /* Build configuration list for PBXProject "CS193P - Assignment 6 - Animation" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -141,9 +170,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA8B2B951D62049B00EFF63F /* SecondViewController.swift in Sources */,
 				EA8B2B911D62049B00EFF63F /* AppDelegate.swift in Sources */,
+				EAD78BC61D6A0D52008282C2 /* Board.swift in Sources */,
+				EAD78BC41D6A04D0008282C2 /* DynamicBehavior.swift in Sources */,
+				EACBFD6B1D74902200173C1E /* Scrobble.swift in Sources */,
+				EA2EC8281D6713AC00635EAA /* GameView.swift in Sources */,
+				EA23350D1D6CDD3500C3F4DF /* Balls_And_Paddles.swift in Sources */,
+				EAF9675F1D68AC4F00992E0A /* BoardSquareView.swift in Sources */,
+				EAF9675D1D68938B00992E0A /* SettingsViewController.swift in Sources */,
 				EA8B2B931D62049B00EFF63F /* FirstViewController.swift in Sources */,
+				EA33015B1D6B51CC00D41180 /* UIKit Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,7 +243,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -249,8 +285,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -263,10 +300,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "CS193P - Assignment 6 - Animation/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "DeimanTechnology.CS193P---Assignment-6---Animation";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -275,10 +314,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "CS193P - Assignment 6 - Animation/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "DeimanTechnology.CS193P---Assignment-6---Animation";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -301,6 +342,7 @@
 				EA8B2BA31D62049B00EFF63F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
