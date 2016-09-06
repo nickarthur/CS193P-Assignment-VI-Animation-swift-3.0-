@@ -85,7 +85,7 @@ class PaddleView: UIView {
 		resetFrame(in: frame)
 	}
 	
-	private func resetFrame(in frame: CGRect)
+	func resetFrame(in frame: CGRect)
 	{	let width = frame.width * widthPercentage / 100
 		let height = width / WidthToHeightFactor
 		let origin = CGPoint(x: frame.width / 2 - width / 2,

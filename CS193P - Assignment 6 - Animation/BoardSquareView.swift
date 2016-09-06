@@ -32,6 +32,8 @@ class BoardSquareView: UIView {
 		}
 	}
 	var letterView: LetterView?
+	var column: Int = 0
+	var row: Int = 0
 	
 	lazy var label: UILabel = {
 		let label = UILabel()
@@ -48,18 +50,16 @@ class BoardSquareView: UIView {
 	}
 	
 	override func willRemoveSubview(_ subview: UIView) {
-		super.willRemoveSubview(subview) // ??
+		super.willRemoveSubview(subview)
 		if let letterView = self.letterView where letterView === subview {
 			self.letterView = nil
-			print("removed LetterView....")
 		}
 	}
 	
 	override func didAddSubview(_ subview: UIView) {
+		super.didAddSubview(subview)
 		if let letterView = subview as? LetterView {
 			self.letterView = letterView
-//			letterView.center = self.center
-			print("added + CENTERED letterview")
 		}
 	}
 }

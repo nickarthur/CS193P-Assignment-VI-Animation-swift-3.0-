@@ -8,6 +8,12 @@
 
 import UIKit
 
+extension CGPoint {
+	mutating func translate(p: CGPoint) {
+		self.x += p.x
+		self.y += p.y
+	}
+}
 
 extension CGFloat {
 	static func random(max: Int) -> CGFloat {

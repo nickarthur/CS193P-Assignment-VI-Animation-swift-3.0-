@@ -56,7 +56,7 @@ func boardDimension(numberOfRows: Int, numberOfColumns: Int) -> CellValues?
 		case 9: return cellValues9x9
 		default: break
 		}
-	} else if numberOfRows == 1 && numberOfColumns <= 5 {
+	} else if numberOfRows == 1 && numberOfColumns <= 7 {
 		return cellValues1x5
 	}
 	return nil
