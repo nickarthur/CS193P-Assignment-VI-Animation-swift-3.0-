@@ -1,13 +1,12 @@
-//
+///////////////////////////////////////////////////////////////////////////////
 //  DynamicBehavior.swift
 //  CS193P - Assignment 6 - Animation
 //
 //  Created by Michel Deiman on 21/08/2016.
 //  Copyright © 2016 Michel Deiman. All rights reserved.
-//
+///////////////////////////////////////////////////////////////////////////////
 
 import UIKit
-
 
 class DynamicBehavior: UIDynamicBehavior {
 	
@@ -33,8 +32,8 @@ class DynamicBehavior: UIDynamicBehavior {
 	}()
 
 	func addBarrier(path: UIBezierPath, name: String) {
-		collider.removeBoundary(withIdentifier: name)
-		collider.addBoundary(withIdentifier: name, for: path)
+		collider.removeBoundary(withIdentifier: name as NSCopying)
+		collider.addBoundary(withIdentifier: name as NSCopying, for: path)
 	}
 	
 	override init() {

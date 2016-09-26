@@ -20,7 +20,6 @@ protocol GameViewDelegate: class {
 class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, TranslatePaddle {
 
 	weak var delegate: GameViewDelegate?
-	
 	@IBInspectable var bricksPerRow: Int = 9 { didSet { setNeedsDisplay() } }
 	@IBInspectable var numberOfRows: Int {
 		get { return bricksPerRow }
@@ -32,9 +31,8 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		return self.bricksPerRow - 2
 	}
 	
-	@IBInspectable var mortar: CGFloat =  1.5 { didSet { setNeedsDisplay() } }
-	
-	@IBInspectable var ballRadius: CGFloat = 15 { didSet { setNeedsDisplay() } }
+	@IBInspectable var mortar: CGFloat =  1.5 	{ didSet { setNeedsDisplay() } }
+	@IBInspectable var ballRadius: CGFloat = 15	{ didSet { setNeedsDisplay() } }
 	lazy var ballMaxRadius: CGFloat = self.bounds.width * 0.25
 	lazy var ballMinRadius: CGFloat = self.bounds.width * 0.025
 
@@ -55,7 +53,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		var view: UIView
 		var superView: UIView
 	}
-	var movingLetter: LetterInTransit?
+	private var movingLetter: LetterInTransit?
 	
 	func movePaddle(recognizer: UIPanGestureRecognizer) {
 		switch recognizer.state {
@@ -79,7 +77,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 				let letterView = movingLetter.view
 				letterView.removeFromSuperview()
 				if let slot = self.hitTest(p: recognizer.location(in: self)) as? BoardSquareView
-				where slot.isEmpty()  {
+				, slot.isEmpty()  {
 					letterView.center = slot.bounds.mid
 					slot.addSubview(letterView)
 				} else {
@@ -97,9 +95,6 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 							slot.addSubview(letterView)
 						}
 					}
-					
-					
-					
 				}
 				self.movingLetter = nil
 				print(mainBoard.score())
@@ -157,28 +152,17 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 	
 	var topBoard: Board! {
 		didSet {
-			guard let topBoard = topBoard else { return }
-			topBoard.frame = frame
-			topBoard.squareSize = squareSize
-			topBoard.bricksPerRow = bricksPerRow
-			topBoard.numberOfRows = topBoardNumberOfRows
-			topBoard.mortar = mortar
+			topBoard?.frame = frame
+			topBoard?.squareSize = squareSize
+			topBoard?.bricksPerRow = bricksPerRow
+			topBoard?.numberOfRows = topBoardNumberOfRows
+			topBoard?.mortar = mortar
 		}
 	}
 
-//	private lazy var topBoard: Board = {
-//		[unowned self] in
-//		let board = Board(frame: self.frame)
-//		board.squareSize = self.squareSize
-//		board.bricksPerRow = self.bricksPerRow
-//		board.numberOfRows = self.topBoardNumberOfRows
-//		board.mortar = self.mortar
-//		return board
-//	}()
 	
-	var mainBoard: Board! {
+	var mainBoard: ScrabbleBoard! {
 		didSet {
-//			guard mainBoard != nil else { return }
 			let origin: CGPoint = topBoard.frame.lowerLeft
 			let height = bounds.height - (topBoard?.bounds.height ?? 0)
 			mainBoard?.frame = CGRect(origin: origin,
@@ -189,20 +173,6 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 			mainBoard?.mortar = mortar
 		}
 	}
-	
-	
-//	private lazy var mainBoard: Board = {
-//		[unowned self] in
-//		let origin: CGPoint = self.topBoard.frame.lowerLeft
-//		let height = self.bounds.height - self.topBoard.bounds.height
-//		let board = Board(frame: CGRect(origin: origin,
-//		                                size: CGSize(width: self.bounds.width, height: height)))
-//		board.squareSize = self.squareSize
-//		board.bricksPerRow = self.bricksPerRow
-//		board.numberOfRows = self.numberOfRows
-//		board.mortar = self.mortar
-//		return board
-//	}()
 	
 	var letterBoard: LetterBoard! {
 		didSet {
@@ -226,24 +196,6 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		}
 	}
 	
-//	private lazy var letterBoard: LetterBoard = {
-//		[unowned self, unowned paddle = self.paddle] in
-//		let letterBoard = LetterBoard()
-//		let height = self.squareSize.height
-//		let originX: CGFloat = self.squareSize.width + self.mortar
-//		let board = Board(frame: CGRect(origin: CGPoint(x: originX, y:  2) ,
-//		                                size: CGSize(width: 0, height: height)))
-//		board.squareSize = self.squareSize
-//		board.bricksPerRow = self.letterBoardBricksPerRow
-//		board.numberOfRows = self.letterBoardNumberOfRows
-//		board.mortar = self.mortar
-//		letterBoard.board = board
-//		let centerY: CGFloat = self.bounds.height - height / 2 - 5
-//		letterBoard.center = CGPoint(x: self.center.x, y: centerY)
-//		letterBoard.buttons?.right.addTarget(self, action: self.selector, for: .touchUpInside)
-//		paddle.fromBottom += letterBoard.frame.height
-//		return letterBoard
-//	}()
 	
 	let selectorRightButton = #selector(handlePauseButton(button:))
 	let selectorLeftButton = #selector(handleLeftButton(button:))
@@ -326,7 +278,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 			ballBehavior.addBarrier(path: UIBezierPath(rect: view.frame), name: name)
 		}
 		
-		mainBoard = Board()
+		mainBoard = ScrabbleBoard()
 		addSubview(mainBoard)
 		letterBoard = LetterBoard()
 		addSubview(letterBoard)
@@ -352,7 +304,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 	
 	func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, at p: CGPoint) {
 //		print("BEGAN boundery contact", p)
-		if 	let name = identifier as? String where name.hasPrefix("view_"),
+		if 	let name = identifier as? String , name.hasPrefix("view_"),
 			let view = topBoard.paths[identifier! as! String],
 			let letterView = view.letterView,
 			let slot = letterBoard.firstEmptySlot(isFor: letterView)

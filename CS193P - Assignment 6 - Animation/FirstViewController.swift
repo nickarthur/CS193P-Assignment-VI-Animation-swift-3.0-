@@ -34,7 +34,7 @@ class FirstViewController: UIViewController, GameViewDelegate {
 	
 	func onPauseGame(button: UIButton) {
 		if let tabBarController = self.tabBarController
-		where tabBarController.tabBar.isHidden == true {
+		, tabBarController.tabBar.isHidden == true {
 			tabBarController.setTabBar(isVisible: true, animated: true)
 			tabBarController.tabBar.isHidden = false
 		}
@@ -46,7 +46,7 @@ class FirstViewController: UIViewController, GameViewDelegate {
 	
 	func onResume() {
 		if let tabBarController = self.tabBarController
-		where tabBarController.tabBar.isHidden == false {
+		, tabBarController.tabBar.isHidden == false {
 			tabBarController.setTabBar(isVisible: false, animated: true)
 		}
 	}
@@ -83,8 +83,6 @@ extension UITabBarController {
 			if tabBarWasHidden {
 				self.tabBar.isHidden = !self.tabBar.isHidden
 			}
-//			self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width,
-//			                         height: self.view.frame.height + offsetY)
 		})
 		{ (finished) in
 			if finished {

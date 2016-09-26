@@ -1,10 +1,10 @@
-//
+///////////////////////////////////////////////////////////////////////////////
 //  UIKit Extensions.swift
 //  DropIt Lecture 14 - Swift 3.0
 //
 //  Created by Michel Deiman on 25/07/2016.
 //  Copyright © 2016 Michel Deiman. All rights reserved.
-//
+///////////////////////////////////////////////////////////////////////////////
 
 import UIKit
 
@@ -30,12 +30,12 @@ extension Int {
 extension UIColor {
 	class var random: UIColor {
 		switch arc4random()%5 {
-		case 0: return UIColor.green()
-		case 1: return UIColor.blue()
-		case 2: return UIColor.orange()
-		case 3: return UIColor.red()
-		case 4: return UIColor.purple()
-		default: return UIColor.black()
+		case 0: return UIColor.green
+		case 1: return UIColor.blue
+		case 2: return UIColor.orange
+		case 3: return UIColor.red
+		case 4: return UIColor.purple
+		default: return UIColor.black
 		}
 	}
 }

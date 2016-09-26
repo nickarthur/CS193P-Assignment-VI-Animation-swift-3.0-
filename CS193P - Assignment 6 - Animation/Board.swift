@@ -1,14 +1,19 @@
-//
-//  NamedBezierPathsView.swift
+///////////////////////////////////////////////////////////////////////////////
+//  Board.swift
 //  CS193P - Assignment 6 - Animation
 //
 //  Created by Michel Deiman on 21/08/2016.
 //  Copyright © 2016 Michel Deiman. All rights reserved.
-//
+///////////////////////////////////////////////////////////////////////////////
 
 import UIKit
 
-class Board: UIView {
+protocol boardDelegate: class {
+	func willEmpty(slot: BoardSquareView, with subview: UIView)
+	func didFill(slot: BoardSquareView, with subview: UIView)
+}
+
+class Board: UIView, boardDelegate {
 	override var collisionBoundsType: UIDynamicItemCollisionBoundsType {
 		return .path
 	}
@@ -46,7 +51,7 @@ class Board: UIView {
 		setupSquares()
 	}
 	
-	private var cellValues: CellValues?
+    var cellValues: CellValues?
 	
 	private func setupSquares() {
 		let brickWide = self.squareSize!.width + self.mortar!
@@ -73,7 +78,27 @@ class Board: UIView {
 		}
 	}
 	
+	weak var delegate: boardDelegate?
+	
+	func willEmpty(slot: BoardSquareView, with subview: UIView) {
+		delegate?.willEmpty(slot: slot, with: subview)
+	}
+	
+	func didFill(slot: BoardSquareView, with subview: UIView) {
+		delegate?.didFill(slot: slot, with: subview)
+	}
+	
+	var paths: [String: BoardSquareView] = [:]
+	
 	func score() -> Int {
+		return 0
+	}
+	
+}
+
+class ScrabbleBoard: Board {
+	
+	override func score() -> Int {
 		var filledSquares: [Int: Int] = [:]
 		guard let cellValues = cellValues else { return 0 }
 		for view in self.subviews {
@@ -88,7 +113,7 @@ class Board: UIView {
 		var totalScore: Int = 0
 		var wordMultiplier = 1
 		var wordValue: [Int] = []
-		{	willSet {
+			{	willSet {
 				if newValue == [] && wordValue.count > 1 {
 					for letterValue in wordValue {
 						totalScore += letterValue * wordMultiplier
@@ -102,33 +127,26 @@ class Board: UIView {
 			for row in 1...numberOfRows! {
 				for col in 1...bricksPerRow! {
 					let index = direction == "horizontal" ? (row-1) * bricksPerRow! + col :
-															(col-1) * numberOfRows! + row
+						(col-1) * numberOfRows! + row
 					if let letterValue = filledSquares[index] {
 						let typeOfSquare = cellValues[index] ?? .regular
-							switch typeOfSquare {
-							case .dw, .tw:
-								wordMultiplier = typeOfSquare.value()
-								wordValue.append(letterValue)
-							case .dl, .tl:
-								wordValue.append(letterValue * typeOfSquare.value())
-							default:
-								wordValue.append(letterValue)
-							}
+						switch typeOfSquare {
+						case .dw, .tw:
+							wordMultiplier = typeOfSquare.value()
+							wordValue.append(letterValue)
+						case .dl, .tl:
+							wordValue.append(letterValue * typeOfSquare.value())
+						default:
+							wordValue.append(letterValue)
+						}
 					} else { wordValue = [] }
 				}
+				wordValue = []
 			}
-			wordValue = []
 		}
 		return totalScore
 	}
-	
-	var paths: [String: BoardSquareView] = [:]
-	
-	
-	override func willRemoveSubview(_ subview: UIView) {
-		super.willRemoveSubview(subview)
-		
-	}
+
 }
 
 class LetterBoard: UIView {
@@ -184,7 +202,7 @@ class LetterBoard: UIView {
 	
 	func firstEmptySlot(isFor view: LetterView) -> BoardSquareView? {
 		for key in keysForSlots {
-			if let slot = self.board.paths[key] where slot.isEmpty()
+			if let slot = self.board.paths[key] , slot.isEmpty()
 			{	slot.letterView = view
 				return slot
 			}

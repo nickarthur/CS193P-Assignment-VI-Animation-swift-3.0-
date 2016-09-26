@@ -1,10 +1,10 @@
-//
+///////////////////////////////////////////////////////////////////////////////
 //  Balls_And_Paddles.swift
 //  CS193P - Assignment 6 - Animation
 //
 //  Created by Michel Deiman on 23/08/2016.
 //  Copyright © 2016 Michel Deiman. All rights reserved.
-//
+///////////////////////////////////////////////////////////////////////////////
 
 import UIKit
 
@@ -53,7 +53,7 @@ enum PaddleConstants {
 	static let MaxWidthPercentage: CGFloat = 50
 	static let MinWidthPercentage: CGFloat = 10
 	static var FromBottom: CGFloat = 5
-	static var Color: UIColor = UIColor.blue()
+	static var Color: UIColor = UIColor.blue
 }
 
 protocol TranslatePaddle {

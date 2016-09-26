@@ -14,7 +14,7 @@
 		EA8B2B931D62049B00EFF63F /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B2B921D62049B00EFF63F /* FirstViewController.swift */; };
 		EA8B2B981D62049B00EFF63F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8B2B961D62049B00EFF63F /* Main.storyboard */; };
 		EA8B2B9A1D62049B00EFF63F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA8B2B991D62049B00EFF63F /* Assets.xcassets */; };
-		EA8B2B9D1D62049B00EFF63F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8B2B9B1D62049B00EFF63F /* LaunchScreen.storyboard */; };
+		EABDF41F1D99527100A62CFD /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EABDF41E1D99527100A62CFD /* Launch Screen.storyboard */; };
 		EACBFD6B1D74902200173C1E /* Scrobble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACBFD6A1D74902200173C1E /* Scrobble.swift */; };
 		EAD78BC41D6A04D0008282C2 /* DynamicBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */; };
 		EAD78BC61D6A0D52008282C2 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD78BC51D6A0D52008282C2 /* Board.swift */; };
@@ -31,8 +31,8 @@
 		EA8B2B921D62049B00EFF63F /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		EA8B2B971D62049B00EFF63F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA8B2B991D62049B00EFF63F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		EA8B2B9C1D62049B00EFF63F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EA8B2B9E1D62049B00EFF63F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EABDF41E1D99527100A62CFD /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		EACBFD6A1D74902200173C1E /* Scrobble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scrobble.swift; sourceTree = "<group>"; };
 		EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicBehavior.swift; sourceTree = "<group>"; };
 		EAD78BC51D6A0D52008282C2 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
@@ -54,6 +54,7 @@
 		EA8B2B841D62049B00EFF63F = {
 			isa = PBXGroup;
 			children = (
+				EABDF41E1D99527100A62CFD /* Launch Screen.storyboard */,
 				EA8B2B8F1D62049B00EFF63F /* CS193P - Assignment 6 - Animation */,
 				EA8B2B8E1D62049B00EFF63F /* Products */,
 			);
@@ -81,7 +82,6 @@
 				EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */,
 				EA33015A1D6B51CC00D41180 /* UIKit Extensions.swift */,
 				EACBFD6A1D74902200173C1E /* Scrobble.swift */,
-				EA8B2B9E1D62049B00EFF63F /* Info.plist */,
 			);
 			path = "CS193P - Assignment 6 - Animation";
 			sourceTree = "<group>";
@@ -90,8 +90,8 @@
 			isa = PBXGroup;
 			children = (
 				EA8B2B901D62049B00EFF63F /* AppDelegate.swift */,
+				EA8B2B9E1D62049B00EFF63F /* Info.plist */,
 				EA8B2B991D62049B00EFF63F /* Assets.xcassets */,
-				EA8B2B9B1D62049B00EFF63F /* LaunchScreen.storyboard */,
 			);
 			name = "Supporting files";
 			sourceTree = "<group>";
@@ -157,7 +157,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA8B2B9D1D62049B00EFF63F /* LaunchScreen.storyboard in Resources */,
+				EABDF41F1D99527100A62CFD /* Launch Screen.storyboard in Resources */,
 				EA8B2B9A1D62049B00EFF63F /* Assets.xcassets in Resources */,
 				EA8B2B981D62049B00EFF63F /* Main.storyboard in Resources */,
 			);
@@ -192,14 +192,6 @@
 				EA8B2B971D62049B00EFF63F /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		EA8B2B9B1D62049B00EFF63F /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EA8B2B9C1D62049B00EFF63F /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -299,6 +291,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 663TR68DHM;
 				INFOPLIST_FILE = "CS193P - Assignment 6 - Animation/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -313,6 +306,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 663TR68DHM;
 				INFOPLIST_FILE = "CS193P - Assignment 6 - Animation/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

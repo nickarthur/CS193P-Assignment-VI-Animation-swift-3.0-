@@ -1,10 +1,10 @@
-//
-//  BrickView.swift
+///////////////////////////////////////////////////////////////////////////////
+//  BoardSquareView.swift
 //  CS193P - Assignment 6 - Animation
 //
 //  Created by Michel Deiman on 20/08/2016.
 //  Copyright © 2016 Michel Deiman. All rights reserved.
-//
+///////////////////////////////////////////////////////////////////////////////
 
 import UIKit
 
@@ -51,15 +51,19 @@ class BoardSquareView: UIView {
 	
 	override func willRemoveSubview(_ subview: UIView) {
 		super.willRemoveSubview(subview)
-		if let letterView = self.letterView where letterView === subview {
+		if let letterView = self.letterView , letterView === subview,
+		let superview = self.superview as? boardDelegate
+		{	superview.willEmpty(slot: self, with: letterView)
 			self.letterView = nil
 		}
 	}
 	
 	override func didAddSubview(_ subview: UIView) {
 		super.didAddSubview(subview)
-		if let letterView = subview as? LetterView {
+		if let letterView = subview as? LetterView, let superview = self.superview as? boardDelegate
+		{
 			self.letterView = letterView
+			superview.didFill(slot: self, with: letterView)
 		}
 	}
 }
