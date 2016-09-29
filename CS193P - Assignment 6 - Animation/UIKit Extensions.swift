@@ -68,8 +68,37 @@ extension UIBezierPath {
 	}
 }
 
-
-
+extension UITabBar {
+    func animateTo(isVisible: Bool, duration: TimeInterval = 1, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
+        guard isHidden == isVisible else { return }
+        
+        let basisY = superview!.frame.height
+        let offsetY = isVisible ? -frame.size.height / 2 : frame.size.height / 2
+        let centerY = basisY + offsetY
+        
+        UIView.animate(withDuration: duration,
+                       delay: delay,
+                       options: [],
+                       animations: {   [unowned self] in
+                            self.center.y = centerY
+                            if isVisible {
+                                self.isHidden = !isVisible
+                            }},
+                       completion: { (finished) in
+                            if finished {
+                                if !isVisible {
+                                    self.isHidden = !isVisible
+                                }
+                                completion?()
+                                self.setNeedsDisplay()
+                                self.layoutIfNeeded()
+                            }
+                        }
+        )
+        
+    }
+    
+}
 
 
 

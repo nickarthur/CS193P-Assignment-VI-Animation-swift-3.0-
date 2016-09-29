@@ -24,48 +24,48 @@ class Board: UIView, boardDelegate {
 	}
 	
 	var squareSize: CGSize? { didSet { setupBoard() } }
-	var mortar: CGFloat? { didSet { setupBoard() } }
-	var bricksPerRow: Int? { didSet { setupBoard() } }
+	var inset: CGFloat? { didSet { setupBoard() } }
+	var squaresPerRow: Int? { didSet { setupBoard() } }
 	var numberOfRows: Int? { didSet { setupBoard() } }
 	
 	private func setupBoard()
 	{	guard
-			let mortar = self.mortar,
-			let bricksPerRow = self.bricksPerRow,
+			let inset = self.inset,
+			let squaresPerRow = self.squaresPerRow,
 			let numberOfRows = self.numberOfRows,
 			let squareSize = self.squareSize
 		else 	{ return }
 		
 		var boardWidth = self.frame.width
 		if boardWidth == 0 {
-			boardWidth = squareSize.width * CGFloat(bricksPerRow) +
-				CGFloat(bricksPerRow + 1) * mortar
+			boardWidth = squareSize.width * CGFloat(squaresPerRow) +
+				CGFloat(squaresPerRow + 1) * inset
 		}
 		let boardHeight: CGFloat = CGFloat(numberOfRows) * squareSize.height +
-			CGFloat(numberOfRows + 1) * mortar
+			CGFloat(numberOfRows + 1) * inset
 		let rect = CGRect(origin: self.frame.origin,
 		                  size: CGSize(width: boardWidth, height: boardHeight))
 		self.frame = rect
 		self.backgroundColor = #colorLiteral(red: 1, green: 0.99997437, blue: 0.9999912977, alpha: 1)
-		cellValues = boardDimension(numberOfRows: numberOfRows, numberOfColumns: bricksPerRow)
+		cellValues = boardDimension(numberOfRows: numberOfRows, numberOfColumns: squaresPerRow)
 		setupSquares()
 	}
 	
     var cellValues: CellValues?
 	
 	private func setupSquares() {
-		let brickWide = self.squareSize!.width + self.mortar!
-		let brickHeight = self.squareSize!.height + self.mortar!
-		var brickOrigin = CGPoint(x: self.mortar!, y: self.mortar!)
+		let brickWide = self.squareSize!.width + self.inset!
+		let brickHeight = self.squareSize!.height + self.inset!
+		var brickOrigin = CGPoint(x: self.inset!, y: self.inset!)
 		
 		for row in 1...numberOfRows! {
-			for col in 1...bricksPerRow! {
+			for col in 1...squaresPerRow! {
 				let frame = CGRect(origin: brickOrigin, size: squareSize!)
 				let squareView = BoardSquareView(frame: frame)
 				squareView.column = col
 				squareView.row = row
 				if cellValues != nil {
-					squareView.typeOfSquare = cellValues![(row-1) * bricksPerRow! + col] ?? .regular
+					squareView.typeOfSquare = cellValues![(row-1) * squaresPerRow! + col] ?? .regular
 				} else {
 					squareView.typeOfSquare = .source
 				}
@@ -73,7 +73,7 @@ class Board: UIView, boardDelegate {
 				paths["view_" + String(col) + "_" + String(row)] = squareView
 				brickOrigin.x += brickWide
 			}
-			brickOrigin.x = mortar!
+			brickOrigin.x = inset!
 			brickOrigin.y += brickHeight
 		}
 	}
@@ -105,7 +105,7 @@ class ScrabbleBoard: Board {
 			for letterView in view.subviews {
 				if let letterView = letterView as? LetterView {
 					let squareView = letterView.superview as! BoardSquareView
-					let index = (squareView.row-1) * bricksPerRow! + squareView.column
+					let index = (squareView.row-1) * squaresPerRow! + squareView.column
 					filledSquares[index] = letterValues[letterView.letter!]
 				}
 			}
@@ -118,21 +118,22 @@ class ScrabbleBoard: Board {
 					for letterValue in wordValue {
 						totalScore += letterValue * wordMultiplier
 					}
-					wordMultiplier = 1
 				}
+                if newValue == [] { wordMultiplier = 1 }
 			}
 		}
 		
 		for direction in ["horizontal", "vertical"] {
 			for row in 1...numberOfRows! {
-				for col in 1...bricksPerRow! {
-					let index = direction == "horizontal" ? (row-1) * bricksPerRow! + col :
+				for col in 1...squaresPerRow! {
+					let index = direction == "horizontal" ? (row-1) * squaresPerRow! + col :
 						(col-1) * numberOfRows! + row
 					if let letterValue = filledSquares[index] {
 						let typeOfSquare = cellValues[index] ?? .regular
 						switch typeOfSquare {
 						case .dw, .tw:
-							wordMultiplier = typeOfSquare.value()
+                            wordMultiplier = wordMultiplier == 1 ? typeOfSquare.value() :
+                                wordMultiplier + typeOfSquare.value()
 							wordValue.append(letterValue)
 						case .dl, .tl:
 							wordValue.append(letterValue * typeOfSquare.value())
@@ -154,8 +155,8 @@ class LetterBoard: UIView {
 	var board: Board! {
 		didSet {
 			guard let board = self.board else { return }
-			let letterBoardHeigth = board.frame.height + 2 * board.mortar!
-			let LetterBoardWidth = board.frame.width + 2 * board.squareSize!.width + 3 * board.mortar! // letterBoardHeigth
+			let letterBoardHeigth = board.frame.height + 2 * board.inset!
+			let LetterBoardWidth = board.frame.width + 2 * board.squareSize!.width + 3 * board.inset! // letterBoardHeigth
 			let rect = CGRect(origin: self.frame.origin,
 			                  size: CGSize(width: LetterBoardWidth, height: letterBoardHeigth))
 			self.frame = rect

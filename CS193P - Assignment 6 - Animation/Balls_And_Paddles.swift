@@ -8,43 +8,29 @@
 
 import UIKit
 
-
+@IBDesignable
 class BallImageView: UIImageView {
 	override var collisionBoundsType: UIDynamicItemCollisionBoundsType {
 		return .ellipse
 	}
 	
-	var radius: CGFloat = BallConstants.Radius {
-		didSet {
-			radius = max(min(radius, maxRadius), minRadius)
-			let rect = CGRect(center: center, size: CGSize(width: radius * 2, height: radius * 2))
-			self.layer.cornerRadius = radius
-			self.frame = rect
-		}
-	}
-	
-	convenience init(center: CGPoint, radius: CGFloat = BallConstants.Radius)
+    @IBInspectable var imageName: String? {
+        didSet {
+            if let imageName = imageName, let image = UIImage(named: imageName) {
+                let radius = self.frame.size.width / 2
+                self.image = image
+                self.layer.cornerRadius = radius
+            }
+        }
+    }
+    
+    convenience init(center: CGPoint, radius: CGFloat, imageName: String = "ball")
 	{	let rect = CGRect(center: center,
 	 	                  size: CGSize(width: radius * 2, height: radius * 2))
 		self.init(frame: rect)
-		self.image = UIImage(named: "ball")
+		self.image = UIImage(named: imageName)
 		self.layer.cornerRadius = radius
-		self.radius = radius
 	}
-	
-	private var maxRadius: CGFloat {
-		return BallConstants.MaxRadius
-	}
-
-	private var minRadius: CGFloat {
-		return BallConstants.MinRadius
-	}
-}
-
-struct BallConstants {
-	static var Radius: CGFloat = 20
-	static let MaxRadius: CGFloat = 50
-	static let MinRadius: CGFloat = 12
 }
 
 enum PaddleConstants {
