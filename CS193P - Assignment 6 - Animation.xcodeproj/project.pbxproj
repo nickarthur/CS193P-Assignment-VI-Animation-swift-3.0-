@@ -16,6 +16,7 @@
 		EA8B2B931D62049B00EFF63F /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B2B921D62049B00EFF63F /* LaunchViewController.swift */; };
 		EA8B2B981D62049B00EFF63F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8B2B961D62049B00EFF63F /* Main.storyboard */; };
 		EA8B2B9A1D62049B00EFF63F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA8B2B991D62049B00EFF63F /* Assets.xcassets */; };
+		EA908ABD1D9D38660042C245 /* FlipPresentAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA908ABC1D9D38660042C245 /* FlipPresentAnimationController.swift */; };
 		EACBFD6B1D74902200173C1E /* Scrobble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACBFD6A1D74902200173C1E /* Scrobble.swift */; };
 		EAD78BC41D6A04D0008282C2 /* DynamicBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */; };
 		EAD78BC61D6A0D52008282C2 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD78BC51D6A0D52008282C2 /* Board.swift */; };
@@ -35,6 +36,7 @@
 		EA8B2B971D62049B00EFF63F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA8B2B991D62049B00EFF63F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA8B2B9E1D62049B00EFF63F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA908ABC1D9D38660042C245 /* FlipPresentAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipPresentAnimationController.swift; sourceTree = "<group>"; };
 		EACBFD6A1D74902200173C1E /* Scrobble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scrobble.swift; sourceTree = "<group>"; };
 		EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicBehavior.swift; sourceTree = "<group>"; };
 		EAD78BC51D6A0D52008282C2 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
@@ -75,6 +77,7 @@
 				EA8B2BA41D62051500EFF63F /* Supporting files */,
 				EA55F2931D9BEC16006531B7 /* Launch Screen.storyboard */,
 				EA8B2B961D62049B00EFF63F /* Main.storyboard */,
+				EA908ABC1D9D38660042C245 /* FlipPresentAnimationController.swift */,
 				EA8B2B921D62049B00EFF63F /* LaunchViewController.swift */,
 				EA545FCC1D9C81530000F4EC /* GameViewController.swift */,
 				EAF9675C1D68938B00992E0A /* SettingsViewController.swift */,
@@ -176,6 +179,7 @@
 				EA8B2B911D62049B00EFF63F /* AppDelegate.swift in Sources */,
 				EAD78BC61D6A0D52008282C2 /* Board.swift in Sources */,
 				EAD78BC41D6A04D0008282C2 /* DynamicBehavior.swift in Sources */,
+				EA908ABD1D9D38660042C245 /* FlipPresentAnimationController.swift in Sources */,
 				EACBFD6B1D74902200173C1E /* Scrobble.swift in Sources */,
 				EA2EC8281D6713AC00635EAA /* GameView.swift in Sources */,
 				EA23350D1D6CDD3500C3F4DF /* Balls_And_Paddles.swift in Sources */,
