@@ -97,8 +97,35 @@ extension UITabBar {
         )
         
     }
-    
 }
+
+extension UIView {
+    func shakeN(times: Int, degrees: CGFloat, duration: TimeInterval, delay: TimeInterval = 0, completion: (() -> Void)? = nil)
+    {
+        var rotationAngle = CGFloat(M_PI * 2) * degrees / 360
+        UIView.animateKeyframes(withDuration: duration, delay: delay, options: [], animations:
+            {
+                let interval = 1 / Double((times - 1))
+                var relativeDuration = interval / 2
+                var relativeStartTime: Double = 0.0
+                var TimeLeftFromDuration = 1.0
+                for n in 1...times {
+                    
+                    UIView.addKeyframe(withRelativeStartTime: relativeStartTime,
+                                       relativeDuration: relativeDuration,
+                                       animations: {
+                        self.transform = CGAffineTransform(rotationAngle: rotationAngle)
+                    })
+                    relativeStartTime += relativeDuration
+                    TimeLeftFromDuration -= relativeDuration
+                    relativeDuration = min(TimeLeftFromDuration, interval)
+                    rotationAngle = n == times - 1 ? 0 : rotationAngle * -1
+
+                }
+            }, completion: { if $0 { completion?() } })
+    }
+}
+
 
 
 

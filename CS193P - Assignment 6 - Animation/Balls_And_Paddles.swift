@@ -33,16 +33,7 @@ class BallImageView: UIImageView {
 	}
 }
 
-enum PaddleConstants {
-	static var WidthToHeightFactor: CGFloat = 12
-	static var WidthPercentage: CGFloat = 40
-	static let MaxWidthPercentage: CGFloat = 50
-	static let MinWidthPercentage: CGFloat = 10
-	static var FromBottom: CGFloat = 5
-	static var Color: UIColor = UIColor.blue
-}
-
-protocol TranslatePaddle {
+protocol TranslationPaddle {
 	func dimensionsHaveChanged(paddle: PaddleView)
 }
 
@@ -50,11 +41,10 @@ class PaddleView: UIView {
 	override func willMove(toSuperview newSuperview: UIView?) {
 		if let superview = newSuperview {
 			resetFrame(in: superview.bounds)
-			referenceFrame = nil
 		}
 	}
 	
-	var delegate: TranslatePaddle?
+	var delegate: TranslationPaddle?
 
 	var WidthToHeightFactor: CGFloat = PaddleConstants.WidthToHeightFactor
 	{	didSet { resetFrame() } }
@@ -67,7 +57,7 @@ class PaddleView: UIView {
 	}
 	
 	private func resetFrame() {
-		guard let frame = self.superview?.frame ?? referenceFrame else { return }
+		guard let frame = self.superview?.frame else { return }
 		resetFrame(in: frame)
 	}
 	
@@ -98,7 +88,7 @@ class PaddleView: UIView {
 				let minX = bounds.width / 2
 				let maxX = superview.bounds.width - bounds.width / 2
 				super.center = CGPoint(x: max(min(newValue.x, maxX), minX),
-				                       y: center.y)
+				                       y: newValue.y)
 				
 			} else {
 				super.center = newValue
@@ -106,22 +96,15 @@ class PaddleView: UIView {
 			delegate?.dimensionsHaveChanged(paddle: self)
 		}
 	}
-	
-	var translationX: CGPoint? {
-		didSet {
-			guard translationX != nil else { return }
-			center = CGPoint(x: center.x + translationX!.x,
-			                 y: center.y)
-		}
-	}
-	
-	private var referenceFrame: CGRect?
-	
+    
+    var translationX: CGFloat = 0 {
+        didSet {  center = CGPoint(x: center.x + translationX, y: center.y) }
+    }
+    	
 	override init(frame: CGRect)
 	{	super.init(frame: frame)
 		self.backgroundColor = color
-		referenceFrame = frame
-		resetFrame()
+        resetFrame(in: frame)
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

@@ -147,7 +147,6 @@ class ScrabbleBoard: Board {
 		}
 		return totalScore
 	}
-
 }
 
 class LetterBoard: UIView {
@@ -161,7 +160,7 @@ class LetterBoard: UIView {
 			                  size: CGSize(width: LetterBoardWidth, height: letterBoardHeigth))
 			self.frame = rect
 			self.layer.cornerRadius = letterBoardHeigth / 2
-			self.backgroundColor = #colorLiteral(red: 0.4, green: 0.2, blue: 0, alpha: 1)
+			self.backgroundColor = letterBoardColors["backGround"]
 			setupButtons()
 			self.addSubview(board)
 		}
@@ -175,9 +174,11 @@ class LetterBoard: UIView {
 			right = UIButton(frame: rightFrame)
 			left.layer.cornerRadius = leftFrame.height / 2
 			right.layer.cornerRadius = rightFrame.height / 2
-			left.backgroundColor = #colorLiteral(red: 0.1603052318, green: 0, blue: 0.8195188642, alpha: 1)
-			right.backgroundColor = #colorLiteral(red: 0.9101451635, green: 0.2575159371, blue: 0.1483209133, alpha: 1)
+			left.backgroundColor = letterBoardColors["leftButtonBG"]
+			right.backgroundColor = letterBoardColors["rightButtonBG"]
 			right.setImage(UIImage(named: "pause"), for: [])
+            right.imageView?.clipsToBounds = true
+            right.layer.masksToBounds = true
 		}
 	}
 	

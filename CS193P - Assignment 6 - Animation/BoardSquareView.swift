@@ -39,7 +39,7 @@ class BoardSquareView: UIView {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.textAlignment = .center
-		label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+		label.textColor = letterColors["tekst"]
 		label.font = UIFont(name: label.font.fontName,
 		                    size: self.bounds.height * 0.45)
 		return label
@@ -95,7 +95,7 @@ class LetterView: UIView {
 		letterLabel.translatesAutoresizingMaskIntoConstraints = false
 		letterLabel.textAlignment = .center
 		letterLabel.text = self.letter
-		letterLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+		letterLabel.textColor = letterColors["tekst"]
 		letterLabel.font = UIFont(name: letterLabel.font.fontName,
 		                          size: self.bounds.height * 0.5)
 		return letterLabel
@@ -106,7 +106,7 @@ class LetterView: UIView {
 		letterLabel.translatesAutoresizingMaskIntoConstraints = false
 		letterLabel.textAlignment = .center
 		letterLabel.text = String((self.letterValue ?? 0)!)
-		letterLabel.textColor = #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)
+		letterLabel.textColor = letterColors["tekstValue"]
 		letterLabel.font = UIFont(name: letterLabel.font.fontName,
 		                          size: self.bounds.height * 0.26)
 		return letterLabel
@@ -128,8 +128,8 @@ class LetterView: UIView {
 	private func localInit(frame: CGRect) {
 		layer.cornerRadius = frame.width * 0.1
 		layer.borderWidth = 2
-		layer.borderColor = #colorLiteral(red: 0.8, green: 0.8, blue: 0.8, alpha: 1).cgColor
-		backgroundColor = #colorLiteral(red: 0.7978851795, green: 0.7254901961, blue: 0.5294117647, alpha: 1)
+		layer.borderColor = letterColors["border"]?.cgColor
+		backgroundColor = letterColors["backGround"]
 		
 		self.addSubview(letterLabel)
 		self.addSubview(letterValueLabel)

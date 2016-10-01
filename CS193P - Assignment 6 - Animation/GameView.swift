@@ -18,9 +18,11 @@ protocol GameViewDelegate: class {
 }
 
 @IBDesignable
-class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, TranslatePaddle {
-
+class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, TranslationPaddle
+{
 	weak var delegate: GameViewDelegate?
+    
+    
 	@IBInspectable var squaresPerRow: Int = 7 { didSet { setNeedsDisplay() } }
 	var numberOfRows: Int { return squaresPerRow }
 
@@ -46,17 +48,14 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		}
 	}
 	
-	private struct LetterInTransit {
-		var view: UIView
-		var superView: UIView
-	}
-	private var movingLetter: LetterInTransit?
+    
+    private var movingLetter: (view: UIView, superView: UIView)?
 	
 	func movePaddle(recognizer: UIPanGestureRecognizer) {
 		switch recognizer.state {
 		case .began:
 			if let letterView = self.hitTest(p: recognizer.location(in: self)) as? LetterView
-			{	movingLetter = LetterInTransit(view: letterView, superView: letterView.superview!)
+			{	movingLetter = (view: letterView, superView: letterView.superview!)
 				let locationInSuperView = letterView.convert(letterView.center, to: self)
 				letterView.removeFromSuperview()
 				letterView.center = locationInSuperView
@@ -66,7 +65,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 			if let movingLetter = movingLetter {
 				movingLetter.view.center.translate(p: recognizer.translation(in: self))
 			} else {
-				paddle?.translationX = recognizer.translation(in: self)
+				paddle?.translationX = recognizer.translation(in: self).x
 			}
 			recognizer.setTranslation(CGPoint.zero, in: self)
 		default:
@@ -99,27 +98,30 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		}
 	}
 	
-//  protocol TranslatePaddle
+//  protocol TranslationPaddle
 	func dimensionsHaveChanged(paddle: PaddleView) {
 		let path = UIBezierPath(rect: paddle.frame)
 		ballBehavior.addBarrier(path: path, name: "paddle")
 	}
 	
 	func handleTap(recognizer: UITapGestureRecognizer) {
-		let location = recognizer.location(in: self)
-		let vector = CGVector(dx: location.x - ball.center.x,
-		                      dy: location.y - self.bounds.height)
-		let instantaneousPush: UIPushBehavior = {
-			let push = UIPushBehavior(items: [ball], mode: UIPushBehaviorMode.instantaneous)
-			push.pushDirection = vector
-			push.magnitude = max(min(vector.dy / -120, maxPushMagnitude), minPushMagnitude)
-			push.action = { [unowned push] in
-				push.dynamicAnimator!.removeBehavior(push)
-			}
-			return push
-		}()
-		self.animator.addBehavior(instantaneousPush)
-		delegate?.onResume()
+        if animating {
+            let location = recognizer.location(in: self)
+            let vector = CGVector(dx: location.x - ball.center.x,
+                                  dy: location.y - self.bounds.height)
+            let instantaneousPush: UIPushBehavior = {
+                let push = UIPushBehavior(items: [ball], mode: UIPushBehaviorMode.instantaneous)
+                push.pushDirection = vector
+                push.magnitude = max(min(vector.dy / -120, maxPushMagnitude), minPushMagnitude)
+                push.action = { [unowned push] in
+                    push.dynamicAnimator!.removeBehavior(push)
+                }
+                return push
+            }()
+            self.animator.addBehavior(instantaneousPush)
+        } else {
+            delegate?.onResume()
+        }
 	}
 	
 	private lazy var animator: UIDynamicAnimator = {
@@ -188,6 +190,9 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 			letterBoard.buttons?.left.addTarget(self, action: self.selectorLeftButton,
 			                                     for: .touchUpInside)
 			paddle?.fromBottom += letterBoard.frame.height
+            if initialToolBarCompensation != 0 {
+                compensateForToolBar(heigth: initialToolBarCompensation, duration: 0.1)
+            }
 		}
 	}
 	
@@ -203,8 +208,33 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
         delegate?.onLeftButton(button: button)
 	}
 	
-	
-	var paddle: PaddleView! {
+    private lazy var storedFrames: (paddle: CGRect, letterBoard: CGRect) = {
+        return (self.paddle.frame, self.letterBoard.frame)
+    }()
+    
+    var initialToolBarCompensation: CGFloat = -50
+    func compensateForToolBar(heigth: CGFloat, duration: TimeInterval = 1, delay: TimeInterval = 0)
+    {
+        var translationY: CGFloat = 0
+        if heigth != 0 {
+            storedFrames = (paddle: paddle.frame, letterBoard: letterBoard.frame)
+            translationY = self.bounds.height - paddle.center.y - heigth
+        }
+        UIView.animate(withDuration: duration, delay: delay, options: [], animations:
+        {   if heigth != 0 {
+                self.paddle.center.y += translationY
+                self.letterBoard.center.y += translationY
+                self.paddle.frame.size.width = self.bounds.width
+                self.paddle.center.x = self.center.x
+            } else {
+                self.paddle.frame = self.storedFrames.paddle
+                self.dimensionsHaveChanged(paddle: self.paddle)
+                self.letterBoard.frame = self.storedFrames.letterBoard
+            }
+            }, completion: { if $0 { }})
+    }
+
+	private var paddle: PaddleView! {
 		didSet {
 			paddle?.resetFrame(in: self.bounds)
 			paddle?.delegate = self
@@ -255,6 +285,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		ball = BallImageView(center: self.center,
 		                     radius: squareSize.width / (squareWidthToBallRatio * 2),
 		                     imageName: "Football")
+        initialToolBarCompensation = 0
 	}
 	
 	override func layoutSubviews() {
@@ -285,18 +316,23 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 			letterView.removeFromSuperview()
 			letterView.center = locationInSuperView
 			self.addSubview(letterView)
-			locationInSuperView = slot.superview!.convert(slot.center, to: self)
-			UIView.animate(withDuration: 1.5, delay: 0.2, options: .curveEaseIn, animations:
-			{
-				letterView.center = locationInSuperView
-			})
-			{	(completed) in
-				if completed {
-					letterView.removeFromSuperview()
-					letterView.center = slot.bounds.mid
-					slot.addSubview(letterView)
-				}
-			}
+            locationInSuperView = slot.superview!.convert(slot.center, to: self)
+            UIView.animate(withDuration: 0.5, delay: 0, options: .autoreverse,
+                           animations: { letterView.backgroundColor =  letterColors["animationBG"]},
+                           completion: { if $0 { letterView.backgroundColor = letterColors["backGround"] }})
+            letterView.shakeN(times: 10, degrees: 20, duration: 0.5, delay: 0, completion:
+            {
+
+                UIView.animate(withDuration: 1.5, delay: 0, options: .curveEaseIn, animations:
+                {
+                    letterView.center = locationInSuperView
+                })
+                {	_ in
+                        letterView.removeFromSuperview()
+                        letterView.center = slot.bounds.mid
+                        slot.addSubview(letterView)
+                }
+            })
 			topBoard.paths[identifier! as! String] = nil
 			ballBehavior.collider.removeBoundary(withIdentifier: identifier!)
 		}
