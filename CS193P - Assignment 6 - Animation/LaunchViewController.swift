@@ -50,10 +50,10 @@ class LaunchViewController: UIViewController, UIViewControllerTransitioningDeleg
 		super.viewWillDisappear(animated)
 	}
     
-    private let customTabBarAnimationController = CustomTabBarAnimationController()
+    private let customAnimationController = CustomAnimationController()
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return customTabBarAnimationController
+        return customAnimationController
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

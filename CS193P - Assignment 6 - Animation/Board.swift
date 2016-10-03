@@ -175,6 +175,7 @@ class LetterBoard: UIView {
 			left.layer.cornerRadius = leftFrame.height / 2
 			right.layer.cornerRadius = rightFrame.height / 2
 			left.backgroundColor = letterBoardColors["leftButtonBG"]
+            left.setImage(UIImage(named: "menu"), for: [])
 			right.backgroundColor = letterBoardColors["rightButtonBG"]
 			right.setImage(UIImage(named: "pause"), for: [])
             right.imageView?.clipsToBounds = true

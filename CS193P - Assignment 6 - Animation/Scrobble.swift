@@ -52,8 +52,7 @@ enum BoardSquareType: String {
         "backGround": #colorLiteral(red: 0.7978851795, green: 0.7254901961, blue: 0.5294117647, alpha: 1), "animationBG": #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1), "border": #colorLiteral(red: 0.8, green: 0.8, blue: 0.8, alpha: 1), "tekst": #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), "tekstValue": #colorLiteral(red: 1, green: 0, blue: 0, alpha: 1)]
 
     let letterBoardColors: [String: UIColor] = [
-        "backGround": #colorLiteral(red: 0.4, green: 0.2, blue: 0, alpha: 1), "leftButtonBG": #colorLiteral(red: 0.1603052318, green: 0, blue: 0.8195188642, alpha: 1), "rightButtonBG": #colorLiteral(red: 0.9101451635, green: 0.2575159371, blue: 0.1483209133, alpha: 1)]
-
+        "backGround": #colorLiteral(red: 0.4, green: 0.2, blue: 0, alpha: 1), "leftButtonBG": #colorLiteral(red: 0.2202886641, green: 0.7022308707, blue: 0.9593387842, alpha: 1), "rightButtonBG": #colorLiteral(red: 0.9101451635, green: 0.2575159371, blue: 0.1483209133, alpha: 1)]
 
 enum PaddleConstants {
     static var WidthToHeightFactor: CGFloat = 12
@@ -63,8 +62,6 @@ enum PaddleConstants {
     static var FromBottom: CGFloat = 5
     static var Color: UIColor = #colorLiteral(red: 0.1921568662, green: 0.007843137719, blue: 0.09019608051, alpha: 1)
 }
-
-
 
 func boardDimension(numberOfRows: Int, numberOfColumns: Int) -> CellValues?
 {	if numberOfRows == numberOfColumns {
@@ -79,6 +76,10 @@ func boardDimension(numberOfRows: Int, numberOfColumns: Int) -> CellValues?
 	return nil
 }
 
+enum ToolBarAnimation {
+    static let duration: Double = 0.6
+    static let delay: Double = 0
+}
 
 
 

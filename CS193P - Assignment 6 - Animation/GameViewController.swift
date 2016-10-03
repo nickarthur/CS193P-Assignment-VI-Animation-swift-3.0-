@@ -32,34 +32,79 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
         }
     }
     
+    lazy var actionSheet:  UIAlertController = {
+        let alert = UIAlertController(
+            title: "Scrabble board",
+            message: "Set parameters for Scrabble Board.",
+            preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(
+            title: "Board: 7 x 7",
+            style: .default,
+            handler: { (action: UIAlertAction) -> Void in self.set(squaresPerRow: 7) })
+        )
+        alert.addAction(UIAlertAction(
+            title: "Board: 9 x 9",
+            style: .default,
+            handler: { (action: UIAlertAction) -> Void in self.set(squaresPerRow: 9) })
+        )
+        alert.addAction(UIAlertAction(
+            title: "Reset Letters",
+            style: .default,
+            handler: { (action: UIAlertAction) -> Void in
+                self.gameView.resetTopBoard() })
+        )
+        alert.addAction(UIAlertAction(
+            title: "Reset All",
+            style: .destructive,
+            handler: { (action: UIAlertAction) -> Void in self.set(squaresPerRow: 0) })
+        )
+        alert.addAction(UIAlertAction(
+            title: "Cancel",
+            style: .cancel,
+            handler: { (action: UIAlertAction) -> Void in self.set(squaresPerRow: -1) })
+        )
+
+        return alert
+    }()
+    
+    func set(squaresPerRow: Int) {
+        var n: Int?
+        switch squaresPerRow {
+        case 7: n = gameView.squaresPerRow == 9 ? 7 : nil
+        case 9: n = gameView.squaresPerRow == 7 ? 9 : nil
+        case 0: n = gameView.squaresPerRow
+        default: n = nil
+        }
+        if let squaresPerRow = n {
+            UIView.transition(
+                with: gameView,
+                duration: 1.5,
+                options: .transitionFlipFromLeft,
+                animations: { [unowned self] in
+                    self.gameView.squaresPerRow = squaresPerRow
+                },
+                completion: { if $0 { self.gameView.animating = true }} )
+        } else {
+            gameView.animating = true
+        }
+        
+    }
+    
     func onLeftButton(button: UIButton)
     {   gameView.animating = false
-        UIView.transition(with: gameView,
-                          duration: 1.5,
-                          options: .transitionFlipFromLeft,
-                          animations: { [unowned self] in
-                            self.gameView.squaresPerRow = self.gameView.squaresPerRow == 7 ? 9: 7
-        },
-                          completion: { if $0 { self.gameView.animating = true }} )
+        present(actionSheet, animated: true, completion: nil)
     }
-    
-    func endGame() {
-    }
-    
-    func pauseGame() {
-    }
-    
+        
     func onPauseGame(button: UIButton) {
         tabBar?.animateTo(isVisible: true)
         gameView.compensateForToolBar(heigth: tabBar!.bounds.height)
         gameView.animating = false
     }
     
-    func resumeGame() {
-    }
-    
     func onResume() {
-        tabBar?.animateTo(isVisible: false, duration: 1, delay: 0,
+        tabBar?.animateTo(isVisible: false,
+                          duration: ToolBarAnimation.duration,
+                          delay: ToolBarAnimation.delay,
                           completion: { self.gameView.animating = true })
         gameView.compensateForToolBar(heigth: 0)
     }
@@ -67,24 +112,18 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
     override func viewDidLoad() {
         tabBar = tabBarController?.tabBar
         tabBarController?.delegate = self
-        
         gameView.initialToolBarCompensation = tabBar?.frame.height ?? 0
-    }
-    
-    var tabBarSnapShot: UIView? {
-        willSet {
-            tabBarSnapShot?.removeFromSuperview()
-            if let tabBar = newValue {
-                tabBar.center.y = gameView.bounds.height - tabBar.frame.height / 2
-                gameView.addSubview(tabBar)
-            }
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tabBar?.animateTo(isVisible: false, duration: 1, delay: 0.5, completion: { self.gameView.animating = true })
-        gameView.compensateForToolBar(heigth: 0, duration: 1, delay: 0.5)
+        tabBar?.animateTo(isVisible: false,
+                          duration: ToolBarAnimation.duration,
+                          delay: ToolBarAnimation.delay,
+                          completion: { self.gameView.animating = true })
+        gameView.compensateForToolBar(heigth: 0,
+                                      duration: ToolBarAnimation.duration,
+                                      delay: ToolBarAnimation.delay)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

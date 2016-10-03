@@ -69,33 +69,38 @@ extension UIBezierPath {
 }
 
 extension UITabBar {
-    func animateTo(isVisible: Bool, duration: TimeInterval = 1, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
-        guard isHidden == isVisible else { return }
-        
-        let basisY = superview!.frame.height
-        let offsetY = isVisible ? -frame.size.height / 2 : frame.size.height / 2
-        let centerY = basisY + offsetY
+    func animateTo(isVisible: Bool,
+                   duration: TimeInterval = ToolBarAnimation.duration,
+                   delay: TimeInterval = ToolBarAnimation.delay,
+                   completion: (() -> Void)? = nil)
+    {
+        struct Busy {
+            static var animating: Bool = false
+        }
+
+        guard isHidden == isVisible, !Busy.animating else { return }
+        Busy.animating = !isVisible
+        let translationY = isVisible ? -frame.height  : frame.height
         
         UIView.animate(withDuration: duration,
                        delay: delay,
-                       options: [],
+                       options: [.allowUserInteraction, .beginFromCurrentState],
                        animations: {   [unowned self] in
-                            self.center.y = centerY
+                            self.center.y += translationY
                             if isVisible {
                                 self.isHidden = !isVisible
                             }},
-                       completion: { (finished) in
-                            if finished {
+                       completion: { [unowned self] in
+                            if $0 {
                                 if !isVisible {
                                     self.isHidden = !isVisible
                                 }
                                 completion?()
+                                Busy.animating = false
                                 self.setNeedsDisplay()
                                 self.layoutIfNeeded()
                             }
-                        }
-        )
-        
+                        })
     }
 }
 
@@ -126,6 +131,16 @@ extension UIView {
     }
 }
 
+extension UIViewController
+{
+    var contentViewController: UIViewController? {
+        if let navcon = self as? UINavigationController {
+            return navcon.visibleViewController
+        } else {
+            return self
+        }
+    }
+}
 
 
 

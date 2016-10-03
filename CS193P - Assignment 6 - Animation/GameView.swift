@@ -9,11 +9,8 @@
 import UIKit
 
 protocol GameViewDelegate: class {
-	func pauseGame()
 	func onPauseGame(button: UIButton)
-	func resumeGame()
 	func onResume()
-	func endGame()
     func onLeftButton(button: UIButton)
 }
 
@@ -213,7 +210,9 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
     }()
     
     var initialToolBarCompensation: CGFloat = -50
-    func compensateForToolBar(heigth: CGFloat, duration: TimeInterval = 1, delay: TimeInterval = 0)
+    func compensateForToolBar(heigth: CGFloat,
+                              duration: TimeInterval = ToolBarAnimation.duration,
+                              delay: TimeInterval = ToolBarAnimation.delay)
     {
         var translationY: CGFloat = 0
         if heigth != 0 {
@@ -262,6 +261,23 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		super.init(coder: aDecoder)
 	}
     
+    func resetTopBoard()
+    {   guard let oldBoard = topBoard else { return }
+        topBoard = Board()
+        topBoard.center.x += frame.width * 1.1
+        insertSubview(topBoard, belowSubview: mainBoard)
+        UIView.animate(withDuration: 1, animations: {   [unowned self] in
+            self.topBoard.center.x = self.center.x
+            oldBoard.center.x -= self.frame.width
+        }, completion: { [unowned self] in if $0
+            {   oldBoard.removeFromSuperview()
+                for (name, view) in self.topBoard.paths {
+                    self.ballBehavior.addBarrier(path: UIBezierPath(rect: view.frame), name: name)
+                }
+                self.animating = true
+            }
+        })
+    }
 	
 	func InitializeBoard() {
 		topBoard?.removeFromSuperview()
