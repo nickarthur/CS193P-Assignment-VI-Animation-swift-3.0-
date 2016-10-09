@@ -8,28 +8,44 @@
 
 import UIKit
 
-@IBDesignable
+//@IBDesignable
 class BallImageView: UIImageView {
 	override var collisionBoundsType: UIDynamicItemCollisionBoundsType {
 		return .ellipse
 	}
 	
-    @IBInspectable var imageName: String? {
-        didSet {
-            if let imageName = imageName, let image = UIImage(named: imageName) {
-                let radius = self.frame.size.width / 2
-                self.image = image
-                self.layer.cornerRadius = radius
-            }
-        }
-    }
-    
-    convenience init(center: CGPoint, radius: CGFloat, imageName: String = "ball")
-	{	let rect = CGRect(center: center,
-	 	                  size: CGSize(width: radius * 2, height: radius * 2))
-		self.init(frame: rect)
-		self.image = UIImage(named: imageName)
+	override func willMove(toSuperview newSuperview: UIView?)
+	{	super.willMove(toSuperview: newSuperview)
+		if let superview = newSuperview as? BallDataSource
+		{
+			dataSource = superview
+		}
+	}
+	
+	var dynamicBehaviorIsActive = false {
+		didSet {
+			if dynamicBehaviorIsActive && !oldValue {
+				dataSource?.dynamicBehavior.add(item: self)
+			} else if !dynamicBehaviorIsActive && oldValue {
+				dataSource?.dynamicBehavior.remove(item: self)
+			}
+		}
+	}
+	
+	override func removeFromSuperview() {
+		if dynamicBehaviorIsActive {
+			dataSource?.dynamicBehavior.remove(item: self)
+			dynamicBehaviorIsActive = false
+		}
+		super.removeFromSuperview()
+	}
+	
+	private var radius: CGFloat! { return dataSource?.ballRadius ?? 0 }
+	weak var dataSource: BallDataSource?
+
+	var contentSize: CGSize {
 		self.layer.cornerRadius = radius
+		return CGSize(width: radius * 2, height: radius * 2)
 	}
 }
 
@@ -39,78 +55,71 @@ protocol TranslationPaddle {
 
 class PaddleView: UIView {
 	override func willMove(toSuperview newSuperview: UIView?) {
-		if let superview = newSuperview {
-			resetFrame(in: superview.bounds)
+		backgroundColor = color
+		if let superview = newSuperview as? TranslationPaddle {
+			delegate = superview
 		}
 	}
 	
 	var delegate: TranslationPaddle?
 
-	var WidthToHeightFactor: CGFloat = PaddleConstants.WidthToHeightFactor
-	{	didSet { resetFrame() } }
+	var heigthPercentage: CGFloat = PaddleConstants.HeigthPercentage
 
 	var widthPercentage: CGFloat = PaddleConstants.WidthPercentage
 	{	didSet {
 			widthPercentage = max(min(widthPercentage, maxWidth), minWidth)
-			resetFrame()
 		}
 	}
 	
-	private func resetFrame() {
-		guard let frame = self.superview?.frame else { return }
-		resetFrame(in: frame)
+	override var intrinsicContentSize: CGSize {
+		guard let superview = superview else { return frame.size }
+		let width = superview.frame.width * widthPercentage / 100
+		let height = superview.frame.height * heigthPercentage / 100
+		return CGSize(width: width, height: height)
 	}
 	
-	func resetFrame(in frame: CGRect)
-	{	let width = frame.width * widthPercentage / 100
-		let height = width / WidthToHeightFactor
-		let origin = CGPoint(x: frame.width / 2 - width / 2,
-		                     y: frame.height - height - fromBottom)
-		let cgRect = CGRect(origin: origin, size: CGSize(width: width, height: height))
-		self.frame = cgRect
-		delegate?.dimensionsHaveChanged(paddle: self)
+	var fullContentSize: CGSize {
+		guard let superview = superview else { return frame.size }
+		let width = superview.frame.width
+		let height = superview.frame.height * heigthPercentage / 100
+		return CGSize(width: width, height: height)
 	}
 	
 	private let maxWidth: CGFloat = PaddleConstants.MaxWidthPercentage
 	private let minWidth: CGFloat = PaddleConstants.MinWidthPercentage
 		
 	var fromBottom: CGFloat = PaddleConstants.FromBottom {
-		didSet { resetFrame() }
+		didSet {
+			fromBottom += PaddleConstants.FromBottom
+		}
+	}
+	
+	var centerY: CGFloat {
+		return superview!.bounds.height - fromBottom - intrinsicContentSize.height / 2
 	}
 	
 	var color: UIColor = PaddleConstants.Color
 	{	didSet { self.backgroundColor = color } }
 	
-	override var center: CGPoint
-	{	get {	return super.center  }
-		set
-		{	if let superview = self.superview {
-				let minX = bounds.width / 2
-				let maxX = superview.bounds.width - bounds.width / 2
-				super.center = CGPoint(x: max(min(newValue.x, maxX), minX),
-				                       y: newValue.y)
-				
-			} else {
-				super.center = newValue
-			}
-			delegate?.dimensionsHaveChanged(paddle: self)
-		}
-	}
-    
-    var translationX: CGFloat = 0 {
-        didSet {  center = CGPoint(x: center.x + translationX, y: center.y) }
-    }
-    	
-	override init(frame: CGRect)
-	{	super.init(frame: frame)
-		self.backgroundColor = color
-        resetFrame(in: frame)
+	
+	override func layoutSubviews() {
+		print("paddle layoutsubs was called")
+		delegate?.dimensionsHaveChanged(paddle: self)
 	}
 	
-	required init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
-		self.backgroundColor = color
-	}
+	var storedRalativeXPosition: CGFloat? 
+	
+    var translationX: CGFloat = 0 {
+        didSet {
+			if let superview = self.superview {
+				let minX = bounds.width / 2
+				let maxX = superview.bounds.width - bounds.width / 2
+				center.x = max(min(center.x + translationX, maxX), minX)
+				delegate?.dimensionsHaveChanged(paddle: self)
+				storedRalativeXPosition = center.x / superview.bounds.width
+			}
+		}
+    }
 }
 
 

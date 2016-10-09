@@ -12,23 +12,49 @@ protocol GameViewDelegate: class {
 	func onPauseGame(button: UIButton)
 	func onResume()
     func onLeftButton(button: UIButton)
+	var heigthOfTabBar: CGFloat { get }
+}
+
+protocol GameBoardDataSource: class {
+	var squaresPerRow: Int				{ get }
+	var numberOfRows: Int				{ get }
+	var topBoardNumberOfRows: Int		{ get }
+	var letterBoardNumberOfRows: Int	{ get }
+	var letterBoardSquaresPerRow: Int	{ get }
+	var inset: CGFloat		{ get }
+	var squareSize: CGSize!	{ get }
+}
+
+protocol DynamicBehaviorDelegate: GameBoardDataSource {
+	var dynamicBehavior: DynamicBehavior { get }
+}
+
+protocol BallDataSource: class {
+	var ballRadius: CGFloat { get }
+	var dynamicBehavior: DynamicBehavior { get }
 }
 
 @IBDesignable
-class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, TranslationPaddle
+class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, TranslationPaddle, GameBoardDataSource, DynamicBehaviorDelegate, BallDataSource
 {
 	weak var delegate: GameViewDelegate?
-    
-    
-	@IBInspectable var squaresPerRow: Int = 7 { didSet { setNeedsDisplay() } }
+
+//	@IBInspectable
+	var squaresPerRow: Int = 9 
 	var numberOfRows: Int { return squaresPerRow }
 
-	let topBoardNumberOfRows: Int = 2
-	let letterBoardNumberOfRows: Int = 1
+	var topBoardNumberOfRows: Int = 2
+	var letterBoardNumberOfRows: Int = 1
 	var letterBoardSquaresPerRow: Int  { return squaresPerRow - 2 }
 	
-	@IBInspectable var inset: CGFloat =  1.5 	{ didSet { setNeedsDisplay() } }
-	@IBInspectable var squareWidthToBallRatio: CGFloat = 1 { didSet{ setNeedsDisplay() } }
+@IBInspectable
+	var inset: CGFloat =  1.5 	{ didSet { setNeedsLayout() } }
+//	@IBInspectable
+	var squareWidthToBallRatio: CGFloat = 1 { didSet{ setNeedsLayout() } }
+	
+	var ballRadius: CGFloat  {
+		return self.squareSize.width / (self.squareWidthToBallRatio * 2)
+	}
 
 	let maxPushMagnitude: CGFloat = 2
 	let minPushMagnitude: CGFloat = 1
@@ -45,7 +71,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		}
 	}
 	
-    
+	
     private var movingLetter: (view: UIView, superView: UIView)?
 	
 	func movePaddle(recognizer: UIPanGestureRecognizer) {
@@ -62,7 +88,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 			if let movingLetter = movingLetter {
 				movingLetter.view.center.translate(p: recognizer.translation(in: self))
 			} else {
-				paddle?.translationX = recognizer.translation(in: self).x
+				paddle.translationX = recognizer.translation(in: self).x
 			}
 			recognizer.setTranslation(CGPoint.zero, in: self)
 		default:
@@ -90,7 +116,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 					}
 				}
 				self.movingLetter = nil
-				print(mainBoard.score())
+				score = mainBoard.score()
 			}
 		}
 	}
@@ -98,7 +124,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 //  protocol TranslationPaddle
 	func dimensionsHaveChanged(paddle: PaddleView) {
 		let path = UIBezierPath(rect: paddle.frame)
-		ballBehavior.addBarrier(path: path, name: "paddle")
+		dynamicBehavior.addBarrier(path: path, name: "paddle")
 	}
 	
 	func handleTap(recognizer: UITapGestureRecognizer) {
@@ -115,7 +141,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
                 }
                 return push
             }()
-            self.animator.addBehavior(instantaneousPush)
+			self.animator.addBehavior(instantaneousPush)
         } else {
             delegate?.onResume()
         }
@@ -131,68 +157,43 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 	var animating: Bool = false {
 		didSet {
 			if animating {
-				animator.addBehavior(ballBehavior)
+				animator.addBehavior(dynamicBehavior)
 			} else {
-				animator.removeBehavior(ballBehavior)
+				animator.removeBehavior(dynamicBehavior)
 			}
 		}
 	}
 
-	private lazy var ballBehavior: DynamicBehavior = {
+	lazy var dynamicBehavior: DynamicBehavior = {
 		[unowned self] in
 		let dynamicBehavior = DynamicBehavior()
 		dynamicBehavior.collider.collisionDelegate = self
 		return dynamicBehavior
 	}()
 	
-	var topBoard: Board! {
+	
+	private var score: Int = 0 {
 		didSet {
-			topBoard?.frame = frame
-			topBoard?.squareSize = squareSize
-			topBoard?.squaresPerRow = squaresPerRow
-			topBoard?.numberOfRows = topBoardNumberOfRows
-			topBoard?.inset = inset
+			scoreLabel?.text = "Score: " + String(score)
 		}
 	}
-	
-	var mainBoard: ScrabbleBoard! {
+	private var scoreLabel: UILabel! {
 		didSet {
-			let origin: CGPoint = topBoard.frame.lowerLeft
-			let height = bounds.height - (topBoard?.bounds.height ?? 0)
-			mainBoard?.frame = CGRect(origin: origin,
-			                          size: CGSize(width: bounds.width, height: height))
-			mainBoard?.squareSize = squareSize
-			mainBoard?.squaresPerRow = squaresPerRow
-			mainBoard?.numberOfRows = numberOfRows
-			mainBoard?.inset = inset
+			scoreLabel.translatesAutoresizingMaskIntoConstraints = false
+			scoreLabel.textAlignment = .center
+			score = 0
+			scoreLabel.textColor = letterColors["tekstValue"]
+			scoreLabel.alpha = 0.3
+			let maxHeight = paddle.frame.minY - mainBoard.frame.maxY
+			scoreLabel.font = UIFont(name: scoreLabel.font.fontName, size: maxHeight * 0.3)
+			let centerYConstant =  maxHeight * 0.5 + mainBoard.frame.maxY - center.y
+			addSubview(scoreLabel)
+			scoreLabel.widthAnchor.constraint(equalTo: widthAnchor , multiplier: 1, constant: 0).isActive = true
+			scoreLabel.heightAnchor.constraint(equalTo: heightAnchor , multiplier: 0.2, constant: 0).isActive = true
+			scoreLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+			scoreLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: centerYConstant).isActive = true
 		}
 	}
-	
-	var letterBoard: LetterBoard! {
-		didSet {
-			guard letterBoard != nil else { return }
-			let height = self.squareSize.height
-			let originX: CGFloat = self.squareSize.width + self.inset
-			let board = Board(frame: CGRect(origin: CGPoint(x: originX, y:  2) ,
-			                                size: CGSize(width: 0, height: height)))
-			board.squareSize = self.squareSize
-			board.squaresPerRow = self.letterBoardSquaresPerRow
-			board.numberOfRows = self.letterBoardNumberOfRows
-			board.inset = self.inset
-			letterBoard.board = board
-			let centerY: CGFloat = self.bounds.height - height / 2 - 5
-			letterBoard.center = CGPoint(x: self.center.x, y: centerY)
-			letterBoard.buttons?.right.addTarget(self, action: self.selectorRightButton,
-			                                     for: .touchUpInside)
-			letterBoard.buttons?.left.addTarget(self, action: self.selectorLeftButton,
-			                                     for: .touchUpInside)
-			paddle?.fromBottom += letterBoard.frame.height
-            if initialToolBarCompensation != 0 {
-                compensateForToolBar(heigth: initialToolBarCompensation, duration: 0.1)
-            }
-		}
-	}
-	
 	
 	let selectorRightButton = #selector(handlePauseButton(button:))
 	let selectorLeftButton = #selector(handleLeftButton(button:))
@@ -205,112 +206,126 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
         delegate?.onLeftButton(button: button)
 	}
 	
-    private lazy var storedFrames: (paddle: CGRect, letterBoard: CGRect) = {
-        return (self.paddle.frame, self.letterBoard.frame)
-    }()
-    
-    var initialToolBarCompensation: CGFloat = -50
-    func compensateForToolBar(heigth: CGFloat,
-                              duration: TimeInterval = ToolBarAnimation.duration,
+    func compensateForToolBar(duration: TimeInterval = ToolBarAnimation.duration,
                               delay: TimeInterval = ToolBarAnimation.delay)
     {
-        var translationY: CGFloat = 0
-        if heigth != 0 {
-            storedFrames = (paddle: paddle.frame, letterBoard: letterBoard.frame)
-            translationY = self.bounds.height - paddle.center.y - heigth
-        }
         UIView.animate(withDuration: duration, delay: delay, options: [], animations:
-        {   if heigth != 0 {
-                self.paddle.center.y += translationY
-                self.letterBoard.center.y += translationY
-                self.paddle.frame.size.width = self.bounds.width
-                self.paddle.center.x = self.center.x
-            } else {
-                self.paddle.frame = self.storedFrames.paddle
-                self.dimensionsHaveChanged(paddle: self.paddle)
-                self.letterBoard.frame = self.storedFrames.letterBoard
-            }
-            }, completion: { if $0 { }})
+		{	[unowned self] in
+			self.layoutPaddleAndLetterBoard()
+		}, completion: { if $0
+			{
+			}})
     }
 
-	private var paddle: PaddleView! {
-		didSet {
-			paddle?.resetFrame(in: self.bounds)
-			paddle?.delegate = self
-		}
+	var topBoard: LetterSourceBoard! = LetterSourceBoard()
+	var mainBoard: ScrabbleSuperBoard! = ScrabbleSuperBoard()
+	var letterBoard: ContainerForLetterTargetBoard! = ContainerForLetterTargetBoard()
+	var paddle: PaddleView! = PaddleView()
+	var ball: BallImageView! = BallImageView(image: UIImage(named: "Football"))
+
+	
+	func resetAllBoards() {
+		topBoard?.removeFromSuperview()
+		mainBoard?.removeFromSuperview()
+		letterBoard?.removeFromSuperview()
+		ball?.removeFromSuperview()
+		paddle?.removeFromSuperview()
+		
+		squareSize = CGSize()
+		topBoard = LetterSourceBoard()
+		mainBoard = ScrabbleSuperBoard()
+		letterBoard = ContainerForLetterTargetBoard()
+		paddle = PaddleView()
+		ball = BallImageView(image: UIImage(named: "Football"))
+		
+		addBoardSubViews()
 	}
 	
-	private var ball: BallImageView! {
-		willSet {
-            guard let ball = ball else { return }
-            ballBehavior.remove(item: ball)
-            ball.removeFromSuperview()
-        }
-        didSet {
-            guard let ball = ball else { return }
-            addSubview(ball)
-            ballBehavior.add(item: ball)
-		}
+	func addBoardSubViews() {
+		addSubview(topBoard)
+		addSubview(mainBoard)
+		addSubview(letterBoard)
+		letterBoard.buttons.left.addTarget(self, action: self.selectorLeftButton,
+		                                   for: .touchUpInside)
+		letterBoard.buttons.right.addTarget(self, action: self.selectorRightButton,
+		                                    for: .touchUpInside)
+		addSubview(paddle)
+		addSubview(ball)
+		_ = changed(bounds: CGRect.zero)
 	}
-
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
+		//		Need to call 'func setupSubViews()' manually
+		//		set vars first: i.e. 'squaresPerRow' ...
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
+		backgroundColor = mainBoardColors["backGround"]
+		addBoardSubViews()
 	}
-    
-    func resetTopBoard()
-    {   guard let oldBoard = topBoard else { return }
-        topBoard = Board()
-        topBoard.center.x += frame.width * 1.1
-        insertSubview(topBoard, belowSubview: mainBoard)
-        UIView.animate(withDuration: 1, animations: {   [unowned self] in
-            self.topBoard.center.x = self.center.x
-            oldBoard.center.x -= self.frame.width
-        }, completion: { [unowned self] in if $0
-            {   oldBoard.removeFromSuperview()
-                for (name, view) in self.topBoard.paths {
-                    self.ballBehavior.addBarrier(path: UIBezierPath(rect: view.frame), name: name)
-                }
-                self.animating = true
-            }
-        })
-    }
 	
-	func InitializeBoard() {
-		topBoard?.removeFromSuperview()
-		mainBoard?.removeFromSuperview()
-		letterBoard?.removeFromSuperview()
-		paddle?.removeFromSuperview()
-		
-		paddle = PaddleView()
-		addSubview(paddle)
-		squareSize = CGSize()
-		topBoard = Board()
-		addSubview(topBoard)
-		for (name, view) in topBoard.paths {
-			ballBehavior.addBarrier(path: UIBezierPath(rect: view.frame), name: name)
+	// Dirty solution.... must find better one ...
+	func changed(bounds: CGRect) -> Bool {
+		struct oldValueFor {
+			static var bounds: CGRect = CGRect.zero
 		}
-		
-		mainBoard = ScrabbleBoard()
-		addSubview(mainBoard)
-		letterBoard = LetterBoard()
-		addSubview(letterBoard)
-		ball = BallImageView(center: self.center,
-		                     radius: squareSize.width / (squareWidthToBallRatio * 2),
-		                     imageName: "Football")
-        initialToolBarCompensation = 0
+		let changed: Bool = oldValueFor.bounds != bounds
+		oldValueFor.bounds = bounds
+		return changed
 	}
 	
 	override func layoutSubviews() {
+		guard changed(bounds: bounds) == true else { return }
+		squareSize = CGSize()
+		topBoard.frame = CGRect(origin: CGPoint.zero, size: topBoard.intrinsicContentSize)
+		mainBoard.frame = CGRect(origin: CGPoint(x: 0, y: topBoard.frame.maxY + 10) ,
+		                             size: mainBoard.intrinsicContentSize)
+		layoutPaddleAndLetterBoard()
+
+		ball.dynamicBehaviorIsActive = false
+		ball.frame = CGRect(center: CGPoint(x: bounds.midX, y: bounds.midY), size: ball.contentSize)
+		ball.dynamicBehaviorIsActive = true
+		animator.updateItem(usingCurrentState: ball)
+		print("layoutSubs was executed...")
 	}
 	
-    override func draw(_ rect: CGRect) {
-        InitializeBoard()
-        
-    }
+	private func layoutPaddleAndLetterBoard() {
+		paddle.fromBottom = letterBoard.intrinsicContentSize.height
+		if delegate != nil, delegate!.heigthOfTabBar > 0 {
+			paddle.frame = CGRect(center: CGPoint(x: bounds.midX,
+			                                      y: bounds.height - delegate!.heigthOfTabBar),
+			                      size: paddle.fullContentSize)
+			let offsetY = paddle.center.y - paddle.centerY
+			letterBoard.frame = CGRect(center: CGPoint(x: center.x, y: letterBoard.centerY + offsetY),
+			                           size: letterBoard.intrinsicContentSize)
+		} else {
+			
+			paddle.frame = CGRect(center: CGPoint(x: (paddle.storedRalativeXPosition ?? 0.5) *  bounds.width,
+			                                      y: paddle.centerY),size: paddle.intrinsicContentSize)
+			letterBoard.frame = CGRect(center: CGPoint(x: center.x, y: letterBoard.centerY),
+			                           size: letterBoard.intrinsicContentSize)
+		}
+		dynamicBehavior.addBarrier(path: UIBezierPath(rect: letterBoard.frame), name: "letterBoard")
+	}
+
+	func resetTopBoard()
+	{	let oldBoard: LetterSourceBoard = topBoard
+		topBoard = LetterSourceBoard()
+		topBoard.frame = CGRect(origin: CGPoint.zero, size: oldBoard.intrinsicContentSize)
+		topBoard.center.x += frame.width * 1.1
+		insertSubview(topBoard, belowSubview: mainBoard)
+		UIView.animate(withDuration: 1, animations: {   [unowned self] in
+			self.topBoard.center.x = self.center.x
+			oldBoard.center.x -= self.frame.width
+			}, completion: { [unowned self] in if $0
+			{   oldBoard.removeFromSuperview()
+				self.animating = true
+				}
+			})
+	}
+	
 	
 	func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item1: UIDynamicItem, with item2: UIDynamicItem, at p: CGPoint) {
 //		print("BEGAN item contact at", p)
@@ -322,8 +337,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 	}
 	
 	func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, at p: CGPoint) {
-//		print("BEGAN boundery contact", p)
-		if 	let name = identifier as? String , name.hasPrefix("view_"),
+		if 	let name = identifier as? String , name.hasPrefix("squareView_"),
 			let view = topBoard.paths[identifier! as! String],
 			let letterView = view.letterView,
 			let slot = letterBoard.firstEmptySlot(isFor: letterView)
@@ -350,12 +364,14 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
                 }
             })
 			topBoard.paths[identifier! as! String] = nil
-			ballBehavior.collider.removeBoundary(withIdentifier: identifier!)
+			dynamicBehavior.collider.removeBoundary(withIdentifier: identifier!)
 		}
 	}
 	
 	func collisionBehavior(_ behavior: UICollisionBehavior, endedContactFor item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?) {
-//		print("END boundery contact")
+		if let name = identifier as? String {
+			print("endedContactFor item: ", name)
+		}
 	}
 
 }

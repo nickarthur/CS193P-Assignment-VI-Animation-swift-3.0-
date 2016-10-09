@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2333a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="FWm-Gu-vrW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16B2338c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="FWm-Gu-vrW">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -82,8 +82,11 @@
                                     <constraint firstItem="eZg-u9-Z8q" firstAttribute="width" secondItem="nPD-0G-Wyr" secondAttribute="width" id="zzT-qM-Z0s"/>
                                 </constraints>
                             </view>
-                            <view contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="2jP-vM-MSL" customClass="GameView" customModule="CS193P___Assignment_6___Animation" customModuleProvider="target">
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <view autoresizesSubviews="NO" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="2jP-vM-MSL" customClass="GameView" customModule="CS193P___Assignment_6___Animation" customModuleProvider="target">
+                                <color key="backgroundColor" red="0.1921568662" green="0.0078431377190000002" blue="0.090196080509999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -106,7 +109,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1790" y="-217"/>
+            <point key="canvasLocation" x="1789.5999999999999" y="-217.24137931034485"/>
         </scene>
         <!--Launch View Controller-->
         <scene sceneID="HlF-7c-0K5">
@@ -159,7 +162,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0H7-gN-87H">
-                                        <state key="normal" title="Button" image="startButton"/>
+                                        <state key="normal" title="Button" image="Football"/>
                                         <connections>
                                             <segue destination="49e-Tb-3d3" kind="show" identifier="toGameView" id="aL7-ky-8sS"/>
                                         </connections>
@@ -184,10 +187,10 @@
                                     <constraint firstItem="kvL-A4-dKg" firstAttribute="centerX" secondItem="RN0-z6-gUo" secondAttribute="centerX" id="ene-cv-0ii"/>
                                     <constraint firstItem="kvL-A4-dKg" firstAttribute="centerY" secondItem="RN0-z6-gUo" secondAttribute="centerY" multiplier="0.4" id="gJ4-CB-fsV"/>
                                     <constraint firstItem="gd0-JC-NVt" firstAttribute="width" secondItem="RN0-z6-gUo" secondAttribute="width" id="gtN-vv-doM"/>
-                                    <constraint firstItem="0H7-gN-87H" firstAttribute="width" secondItem="8tK-X8-vYN" secondAttribute="width" multiplier="1.2" id="iG2-t9-gWD"/>
+                                    <constraint firstItem="0H7-gN-87H" firstAttribute="width" secondItem="8tK-X8-vYN" secondAttribute="width" id="iG2-t9-gWD"/>
                                     <constraint firstItem="kvL-A4-dKg" firstAttribute="width" secondItem="RN0-z6-gUo" secondAttribute="width" id="lRG-kP-caQ"/>
                                     <constraint firstItem="hRu-Nx-fyW" firstAttribute="leading" secondItem="RN0-z6-gUo" secondAttribute="leading" constant="20" symbolic="YES" id="pHm-Yp-MrT"/>
-                                    <constraint firstItem="0H7-gN-87H" firstAttribute="height" secondItem="8tK-X8-vYN" secondAttribute="height" multiplier="1.3" id="s8n-ml-t5V"/>
+                                    <constraint firstItem="0H7-gN-87H" firstAttribute="height" secondItem="8tK-X8-vYN" secondAttribute="height" id="s8n-ml-t5V"/>
                                     <constraint firstAttribute="centerX" secondItem="hRu-Nx-fyW" secondAttribute="centerX" id="vs2-rf-4wd"/>
                                 </constraints>
                             </view>
@@ -544,6 +547,5 @@
         <image name="pinch" width="88" height="88"/>
         <image name="scrabble" width="839" height="293"/>
         <image name="settings" width="30" height="30"/>
-        <image name="startButton" width="71" height="81"/>
     </resources>
 </document>

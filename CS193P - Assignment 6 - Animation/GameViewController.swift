@@ -19,7 +19,14 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
     }
 
     weak var tabBar: UITabBar?
-    
+	
+	var heigthOfTabBar: CGFloat {
+		if let tabBar = tabBar {
+			return gameView.bounds.height - tabBar.frame.minY
+		}
+		return 0
+	}
+
     @IBOutlet weak var launchView: UIView!
     
     @IBOutlet weak var gameView: GameView! {
@@ -63,7 +70,8 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
             style: .cancel,
             handler: { (action: UIAlertAction) -> Void in self.set(squaresPerRow: -1) })
         )
-
+        alert.modalPresentationStyle = .popover
+        
         return alert
     }()
     
@@ -76,28 +84,33 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
         default: n = nil
         }
         if let squaresPerRow = n {
-            UIView.transition(
-                with: gameView,
-                duration: 1.5,
-                options: .transitionFlipFromLeft,
-                animations: { [unowned self] in
-                    self.gameView.squaresPerRow = squaresPerRow
-                },
-                completion: { if $0 { self.gameView.animating = true }} )
-        } else {
-            gameView.animating = true
-        }
-        
+
+
+			UIView.transition(
+				with: gameView,
+				duration: 1.5,
+				options: .transitionFlipFromLeft,
+				animations: { [unowned self] in
+					self.gameView.squaresPerRow = squaresPerRow
+					self.gameView.resetAllBoards()
+				},
+				completion: { if $0 { self.gameView.animating = true }} )
+		} else {
+			gameView.animating = true
+		}
+
     }
-    
+	
     func onLeftButton(button: UIButton)
     {   gameView.animating = false
+        let ppc = actionSheet.popoverPresentationController
+        ppc?.sourceView = button
         present(actionSheet, animated: true, completion: nil)
     }
         
     func onPauseGame(button: UIButton) {
         tabBar?.animateTo(isVisible: true)
-        gameView.compensateForToolBar(heigth: tabBar!.bounds.height)
+        gameView.compensateForToolBar()
         gameView.animating = false
     }
     
@@ -106,24 +119,22 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
                           duration: ToolBarAnimation.duration,
                           delay: ToolBarAnimation.delay,
                           completion: { self.gameView.animating = true })
-        gameView.compensateForToolBar(heigth: 0)
+        gameView.compensateForToolBar()
     }
     
     override func viewDidLoad() {
         tabBar = tabBarController?.tabBar
         tabBarController?.delegate = self
-        gameView.initialToolBarCompensation = tabBar?.frame.height ?? 0
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+		self.gameView.animating = true
         tabBar?.animateTo(isVisible: false,
                           duration: ToolBarAnimation.duration,
                           delay: ToolBarAnimation.delay,
                           completion: { self.gameView.animating = true })
-        gameView.compensateForToolBar(heigth: 0,
-                                      duration: ToolBarAnimation.duration,
-                                      delay: ToolBarAnimation.delay)
+        gameView.compensateForToolBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

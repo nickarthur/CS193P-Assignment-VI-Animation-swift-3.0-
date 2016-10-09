@@ -12,6 +12,7 @@
 		EA33015B1D6B51CC00D41180 /* UIKit Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA33015A1D6B51CC00D41180 /* UIKit Extensions.swift */; };
 		EA545FCD1D9C81530000F4EC /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA545FCC1D9C81530000F4EC /* GameViewController.swift */; };
 		EA55F2951D9BEC16006531B7 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA55F2931D9BEC16006531B7 /* Launch Screen.storyboard */; };
+		EA7BBDCC1DA44D7600D0E2D4 /* SuperBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7BBDCB1DA44D7600D0E2D4 /* SuperBoard.swift */; };
 		EA8B2B911D62049B00EFF63F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B2B901D62049B00EFF63F /* AppDelegate.swift */; };
 		EA8B2B931D62049B00EFF63F /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B2B921D62049B00EFF63F /* LaunchViewController.swift */; };
 		EA8B2B981D62049B00EFF63F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA8B2B961D62049B00EFF63F /* Main.storyboard */; };
@@ -19,7 +20,6 @@
 		EA908ABD1D9D38660042C245 /* CustomTabBarAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA908ABC1D9D38660042C245 /* CustomTabBarAnimationController.swift */; };
 		EACBFD6B1D74902200173C1E /* Scrobble.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACBFD6A1D74902200173C1E /* Scrobble.swift */; };
 		EAD78BC41D6A04D0008282C2 /* DynamicBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */; };
-		EAD78BC61D6A0D52008282C2 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD78BC51D6A0D52008282C2 /* Board.swift */; };
 		EAF9675D1D68938B00992E0A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF9675C1D68938B00992E0A /* SettingsViewController.swift */; };
 		EAF9675F1D68AC4F00992E0A /* BoardSquareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF9675E1D68AC4F00992E0A /* BoardSquareView.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +30,7 @@
 		EA33015A1D6B51CC00D41180 /* UIKit Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIKit Extensions.swift"; sourceTree = "<group>"; };
 		EA545FCC1D9C81530000F4EC /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		EA55F2931D9BEC16006531B7 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		EA7BBDCB1DA44D7600D0E2D4 /* SuperBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuperBoard.swift; sourceTree = "<group>"; };
 		EA8B2B8D1D62049B00EFF63F /* CS193P - Assignment 6 - Animation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CS193P - Assignment 6 - Animation.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA8B2B901D62049B00EFF63F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA8B2B921D62049B00EFF63F /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
@@ -39,7 +40,6 @@
 		EA908ABC1D9D38660042C245 /* CustomTabBarAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBarAnimationController.swift; sourceTree = "<group>"; };
 		EACBFD6A1D74902200173C1E /* Scrobble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scrobble.swift; sourceTree = "<group>"; };
 		EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicBehavior.swift; sourceTree = "<group>"; };
-		EAD78BC51D6A0D52008282C2 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		EAF9675C1D68938B00992E0A /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		EAF9675E1D68AC4F00992E0A /* BoardSquareView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardSquareView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,7 +84,7 @@
 				EA2EC8271D6713AC00635EAA /* GameView.swift */,
 				EA23350C1D6CDD3500C3F4DF /* Balls_And_Paddles.swift */,
 				EAF9675E1D68AC4F00992E0A /* BoardSquareView.swift */,
-				EAD78BC51D6A0D52008282C2 /* Board.swift */,
+				EA7BBDCB1DA44D7600D0E2D4 /* SuperBoard.swift */,
 				EAD78BC31D6A04D0008282C2 /* DynamicBehavior.swift */,
 				EA33015A1D6B51CC00D41180 /* UIKit Extensions.swift */,
 				EACBFD6A1D74902200173C1E /* Scrobble.swift */,
@@ -177,12 +177,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA8B2B911D62049B00EFF63F /* AppDelegate.swift in Sources */,
-				EAD78BC61D6A0D52008282C2 /* Board.swift in Sources */,
 				EAD78BC41D6A04D0008282C2 /* DynamicBehavior.swift in Sources */,
 				EA908ABD1D9D38660042C245 /* CustomTabBarAnimationController.swift in Sources */,
 				EACBFD6B1D74902200173C1E /* Scrobble.swift in Sources */,
 				EA2EC8281D6713AC00635EAA /* GameView.swift in Sources */,
 				EA23350D1D6CDD3500C3F4DF /* Balls_And_Paddles.swift in Sources */,
+				EA7BBDCC1DA44D7600D0E2D4 /* SuperBoard.swift in Sources */,
 				EAF9675F1D68AC4F00992E0A /* BoardSquareView.swift in Sources */,
 				EAF9675D1D68938B00992E0A /* SettingsViewController.swift in Sources */,
 				EA8B2B931D62049B00EFF63F /* LaunchViewController.swift in Sources */,

@@ -34,7 +34,7 @@ class LaunchViewController: UIViewController, UIViewControllerTransitioningDeleg
     }
     
     private lazy var timer: Timer =  { [unowned self] in
-        return Timer.init( timeInterval: 1.5,
+        return Timer.init( timeInterval: 0.5,
                            target: self,
                            selector: self.selectorStartButton,
                            userInfo: nil,
