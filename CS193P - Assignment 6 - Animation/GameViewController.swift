@@ -8,23 +8,51 @@
 
 import UIKit
 
-class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTransitioningDelegate, UITabBarControllerDelegate {
-    
-    
-    let customTabBarAnimationController = CustomTabBarAnimationController()
-    
-    func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?
-    {
-        return customTabBarAnimationController
-    }
+protocol ControllerWithSettingsData: class {
+	var density: CGFloat { get set }
+	var maxPushMagnitude: CGFloat { get set }
+	var gravityDirection: CGVector { get set }
+}
 
-    weak var tabBar: UITabBar?
+class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTransitioningDelegate, UITabBarControllerDelegate, ControllerWithSettingsData, GameViewDataSource {
 	
-	var heigthOfTabBar: CGFloat {
-		if let tabBar = tabBar {
-			return gameView.bounds.height - tabBar.frame.minY
+	private let customTabBarAnimationController = CustomTabBarAnimationController()
+	func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning?
+	{	return customTabBarAnimationController
+	}
+	
+	var gravityDirection: CGVector {
+		set {
+			gameView.dynamicBehavior.gravity.gravityDirection = newValue
+			userdefaults.set(Float(newValue.dx), forKey: Keys.gravityDirectionX)
+			userdefaults.set(Float(newValue.dy), forKey: Keys.gravityDirectionY)
 		}
-		return 0
+		get {
+			let dx = CGFloat(userdefaults.float(forKey: Keys.gravityDirectionX))
+			let dy = CGFloat(userdefaults.float(forKey: Keys.gravityDirectionY))
+			return CGVector(dx: dx, dy: dy)
+		}
+	}
+	
+	var density: CGFloat {
+		set {
+			gameView.dynamicBehavior.itemBehavior.density = min(max(newValue, 0), Constants.maxDensity)
+			userdefaults.set(Float(newValue), forKey: Keys.density)
+		}
+		get { return CGFloat(userdefaults.float(forKey: Keys.density)) }
+	}
+	
+	var maxPushMagnitude: CGFloat {
+		set {
+			gameView.maxPushMagnitude = newValue
+			userdefaults.set(Float(newValue), forKey: Keys.maxPushMagnitude)
+		}
+		get { return CGFloat(userdefaults.float(forKey: Keys.maxPushMagnitude)) }
+	}
+
+	weak var tabBar: UITabBar?
+	var heigthOfTabBar: CGFloat {
+		return tabBar != nil ? gameView.bounds.height - tabBar!.frame.minY : 0
 	}
 
     @IBOutlet weak var launchView: UIView!
@@ -35,11 +63,34 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
             gameView.addGestureRecognizer(UIPanGestureRecognizer(target: gameView, action: selector))
             selector = #selector(gameView.handleTap(recognizer:))
             gameView.addGestureRecognizer(UITapGestureRecognizer(target: gameView, action: selector))
+			fetchGameViewDynamicsParameters()
             gameView.delegate = self
+			gameView.dataSource = self
         }
     }
-    
-    lazy var actionSheet:  UIAlertController = {
+	
+	func onLeftButton(button: UIButton)
+	{   gameView.animating = false
+		let ppc = actionSheet.popoverPresentationController
+		ppc?.sourceView = button
+		present(actionSheet, animated: true, completion: nil)
+	}
+	
+	func onPauseGame(button: UIButton) {
+		tabBar?.animateTo(isVisible: true)
+		gameView.compensateForToolBar()
+		gameView.animating = false
+	}
+	
+	func onResume() {
+		tabBar?.animateTo(isVisible: false,
+		                  duration: ToolBarAnimation.duration,
+		                  delay: ToolBarAnimation.delay,
+		                  completion: { self.gameView.animating = true })
+		gameView.compensateForToolBar()
+	}
+
+    private lazy var actionSheet:  UIAlertController = {
         let alert = UIAlertController(
             title: "Scrabble board",
             message: "Set parameters for Scrabble Board.",
@@ -75,7 +126,7 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
         return alert
     }()
     
-    func set(squaresPerRow: Int) {
+    private func set(squaresPerRow: Int) {
         var n: Int?
         switch squaresPerRow {
         case 7: n = gameView.squaresPerRow == 9 ? 7 : nil
@@ -84,8 +135,6 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
         default: n = nil
         }
         if let squaresPerRow = n {
-
-
 			UIView.transition(
 				with: gameView,
 				duration: 1.5,
@@ -101,30 +150,20 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
 
     }
 	
-    func onLeftButton(button: UIButton)
-    {   gameView.animating = false
-        let ppc = actionSheet.popoverPresentationController
-        ppc?.sourceView = button
-        present(actionSheet, animated: true, completion: nil)
-    }
-        
-    func onPauseGame(button: UIButton) {
-        tabBar?.animateTo(isVisible: true)
-        gameView.compensateForToolBar()
-        gameView.animating = false
-    }
-    
-    func onResume() {
-        tabBar?.animateTo(isVisible: false,
-                          duration: ToolBarAnimation.duration,
-                          delay: ToolBarAnimation.delay,
-                          completion: { self.gameView.animating = true })
-        gameView.compensateForToolBar()
-    }
-    
+	private let userdefaults = UserDefaults.standard
+	private func fetchGameViewDynamicsParameters() {
+		let deviceHasStoredData: Bool = userdefaults.bool(forKey: Keys.deviceHasStoredData)
+		if !deviceHasStoredData {
+			density = Constants.maxDensity
+			maxPushMagnitude = Constants.maxPushMagnitude / 2
+			gravityDirection = Constants.gravityDirection
+			userdefaults.set(true, forKey: Keys.deviceHasStoredData)
+		}
+	}
+	
     override func viewDidLoad() {
-        tabBar = tabBarController?.tabBar
-        tabBarController?.delegate = self
+		tabBar = tabBarController?.tabBar
+		tabBarController?.delegate = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -142,5 +181,6 @@ class GameViewController: UIViewController, GameViewDelegate, UIViewControllerTr
         gameView.animating = false
         tabBar?.isHidden = false
     }
+	
     
 }

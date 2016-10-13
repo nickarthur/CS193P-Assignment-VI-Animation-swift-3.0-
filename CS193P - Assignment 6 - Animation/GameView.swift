@@ -8,11 +8,14 @@
 
 import UIKit
 
-protocol GameViewDelegate: class {
+protocol GameViewDelegate: ControllerWithSettingsData {
 	func onPauseGame(button: UIButton)
 	func onResume()
     func onLeftButton(button: UIButton)
 	var heigthOfTabBar: CGFloat { get }
+}
+
+protocol GameViewDataSource: class {
 }
 
 protocol GameBoardDataSource: class {
@@ -34,12 +37,18 @@ protocol BallDataSource: class {
 	var dynamicBehavior: DynamicBehavior { get }
 }
 
-@IBDesignable
 class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, TranslationPaddle, GameBoardDataSource, DynamicBehaviorDelegate, BallDataSource
 {
-	weak var delegate: GameViewDelegate?
+	
+	weak var dataSource: GameViewDataSource?
+	weak var delegate: GameViewDelegate? {
+		didSet {
+			dynamicBehavior.itemBehavior.density = self.delegate!.density
+			dynamicBehavior.gravity.gravityDirection = self.delegate!.gravityDirection
+		}
+	}
+	
 
-//	@IBInspectable
 	var squaresPerRow: Int = 9 
 	var numberOfRows: Int { return squaresPerRow }
 
@@ -47,17 +56,16 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 	var letterBoardNumberOfRows: Int = 1
 	var letterBoardSquaresPerRow: Int  { return squaresPerRow - 2 }
 	
-@IBInspectable
 	var inset: CGFloat =  1.5 	{ didSet { setNeedsLayout() } }
-//	@IBInspectable
 	var squareWidthToBallRatio: CGFloat = 1 { didSet{ setNeedsLayout() } }
 	
 	var ballRadius: CGFloat  {
 		return self.squareSize.width / (self.squareWidthToBallRatio * 2)
 	}
 
-	let maxPushMagnitude: CGFloat = 2
-	let minPushMagnitude: CGFloat = 1
+	lazy var maxPushMagnitude: CGFloat = {
+		return self.delegate?.maxPushMagnitude ?? Constants.maxPushMagnitude / 2
+	}()
 	
 	var squareSize: CGSize! {
 		didSet {
@@ -95,7 +103,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 			if let movingLetter = movingLetter {
 				let letterView = movingLetter.view
 				letterView.removeFromSuperview()
-				if let slot = self.hitTest(p: recognizer.location(in: self)) as? BoardSquareView
+				if let slot = self.hitTest(p: recognizer.location(in: self)) as? SquareView
 				, slot.isEmpty()  {
 					letterView.center = slot.bounds.mid
 					slot.addSubview(letterView)
@@ -135,7 +143,8 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
             let instantaneousPush: UIPushBehavior = {
                 let push = UIPushBehavior(items: [ball], mode: UIPushBehaviorMode.instantaneous)
                 push.pushDirection = vector
-                push.magnitude = max(min(vector.dy / -120, maxPushMagnitude), minPushMagnitude)
+				let pushMagnitude = vector.dy * maxPushMagnitude / -bounds.height
+                push.magnitude = max(pushMagnitude, Constants.minPushMagnitude)
                 push.action = { [unowned push] in
                     push.dynamicAnimator!.removeBehavior(push)
                 }
@@ -218,7 +227,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
     }
 
 	var topBoard: LetterSourceBoard! = LetterSourceBoard()
-	var mainBoard: ScrabbleSuperBoard! = ScrabbleSuperBoard()
+	var mainBoard: ScrabbleBoard! = ScrabbleBoard()
 	var letterBoard: ContainerForLetterTargetBoard! = ContainerForLetterTargetBoard()
 	var paddle: PaddleView! = PaddleView()
 	var ball: BallImageView! = BallImageView(image: UIImage(named: "Football"))
@@ -233,7 +242,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		
 		squareSize = CGSize()
 		topBoard = LetterSourceBoard()
-		mainBoard = ScrabbleSuperBoard()
+		mainBoard = ScrabbleBoard()
 		letterBoard = ContainerForLetterTargetBoard()
 		paddle = PaddleView()
 		ball = BallImageView(image: UIImage(named: "Football"))
@@ -289,6 +298,9 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 		ball.dynamicBehaviorIsActive = true
 		animator.updateItem(usingCurrentState: ball)
 		print("layoutSubs was executed...")
+		scoreLabel?.removeFromSuperview()
+		scoreLabel = UILabel()
+		addSubview(scoreLabel)
 	}
 	
 	private func layoutPaddleAndLetterBoard() {
@@ -325,7 +337,6 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 				}
 			})
 	}
-	
 	
 	func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item1: UIDynamicItem, with item2: UIDynamicItem, at p: CGPoint) {
 //		print("BEGAN item contact at", p)

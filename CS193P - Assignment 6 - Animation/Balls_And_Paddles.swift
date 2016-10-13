@@ -47,6 +47,18 @@ class BallImageView: UIImageView {
 		self.layer.cornerRadius = radius
 		return CGSize(width: radius * 2, height: radius * 2)
 	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+	}
+	
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+	}
+	
+	override init(image: UIImage?) {
+		super.init(image: image)
+	}
 }
 
 protocol TranslationPaddle {
@@ -103,7 +115,6 @@ class PaddleView: UIView {
 	
 	
 	override func layoutSubviews() {
-		print("paddle layoutsubs was called")
 		delegate?.dimensionsHaveChanged(paddle: self)
 	}
 	

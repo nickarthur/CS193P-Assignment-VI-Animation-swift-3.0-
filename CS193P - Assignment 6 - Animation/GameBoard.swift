@@ -1,19 +1,27 @@
-//
-//  SuperBoard.swift
+///////////////////////////////////////////////////////////////////////////////
+//  GameBoard.swift
 //  CS193P - Assignment 6 - Animation
 //
 //  Created by Michel Deiman on 04/10/2016.
 //  Copyright © 2016 Michel Deiman. All rights reserved.
-//
+///////////////////////////////////////////////////////////////////////////////
 
 import UIKit
 
 protocol BoardDelegate: class {
-	func willClear(slot: BoardSquareView, with subview: UIView)
-	func didFill(slot: BoardSquareView, with subview: UIView)
+	func willClear(slot: SquareView, with subview: UIView)
+	func didFill(slot: SquareView, with subview: UIView)
 }
 
-class SuperBoard: UIView, BoardDelegate {
+enum TypeOfBoard {
+	case gameBoard
+	case letterSourceBoard
+	case scrabbleBoard
+	case letterTargetBoard
+}
+
+class GameBoard: UIView, BoardDelegate {
+	var typeOfBoard: TypeOfBoard { return .gameBoard }
 	
 	override func layoutSubviews() {
 		let brickWide = squareSize.width + inset
@@ -62,10 +70,12 @@ class SuperBoard: UIView, BoardDelegate {
 
 	func willClear(slot: SquareView, with subview: UIView) {
 		delegate?.willClear(slot: slot, with: subview)
+		print("willClear is called")
 	}
 	
 	func didFill(slot: SquareView, with subview: UIView) {
 		delegate?.didFill(slot: slot, with: subview)
+		print("didFill is called")
 	}
 	
 	var cellValues: CellValues?
@@ -74,11 +84,12 @@ class SuperBoard: UIView, BoardDelegate {
 		return 0
 	}
 	
-	var paths: [String: BoardSquareView] = [:]
+	var paths: [String: SquareView] = [:]
 }
 
-class LetterSourceBoard: SuperBoard {
-
+class LetterSourceBoard: GameBoard {
+	override var typeOfBoard: TypeOfBoard { return .letterSourceBoard }
+	
 	override func willMove(toSuperview newSuperview: UIView?) {
 		if let superView = newSuperview as? DynamicBehaviorDelegate, dataSource == nil
 		{	dataSource = superView
@@ -107,17 +118,17 @@ class LetterSourceBoard: SuperBoard {
 	private var dynamicBehavior: DynamicBehavior?
 }
 
-class ScrabbleSuperBoard: SuperBoard {
-		
-	override func score() -> Int {
+class ScrabbleBoard: GameBoard {
+	override var typeOfBoard: TypeOfBoard { return .scrabbleBoard }
+
+	 override func score() -> Int {
 		var filledSquares: [Int: Int] = [:]
 		guard let cellValues = cellValues else { return 0 }
-		for view in self.subviews {
+		for (index, view) in self.subviews.enumerated() {
 			for letterView in view.subviews {
 				if let letterView = letterView as? LetterView {
-					let squareView = letterView.superview as! BoardSquareView
-					let index = (squareView.row-1) * squaresPerRow + squareView.column
-					filledSquares[index] = letterValues[letterView.letter!]
+					let squareView = letterView.superview as! SquareView
+					filledSquares[index + 1] = letterValues[letterView.letter!]
 				}
 			}
 		}
@@ -160,7 +171,8 @@ class ScrabbleSuperBoard: SuperBoard {
 	}
 }
 
-class LetterTargetBoard: SuperBoard {
+class LetterTargetBoard: GameBoard {
+	override var typeOfBoard: TypeOfBoard { return .letterTargetBoard }
 	
 	override var squaresPerRow: Int	{ return dataSource!.letterBoardSquaresPerRow }
 	override var numberOfRows: Int	{ return dataSource!.letterBoardNumberOfRows }
@@ -229,7 +241,7 @@ class ContainerForLetterTargetBoard: UIView {
 		return keys
 		}()
 	
-	func firstEmptySlot(isFor view: LetterView) -> BoardSquareView? {
+	func firstEmptySlot(isFor view: LetterView) -> SquareView? {
 		for key in keysForSlots {
 			if let slot = board.paths[key] , slot.isEmpty()
 			{	slot.letterView = view

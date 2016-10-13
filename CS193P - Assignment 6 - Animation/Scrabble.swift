@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  Scrobble.swift
+//  Scrabble.swift
 //  CS193P - Assignment 6 - Animation
 //
 //  Created by Michel Deiman on 29/08/2016.
@@ -82,7 +82,21 @@ enum ToolBarAnimation {
     static let delay: Double = 0
 }
 
+enum Keys {
+	static let density: String = "density"
+	static let maxPushMagnitude: String = "maxPushMagnitude"
+	static let deviceHasStoredData: String = "deviceHasStoredData"
+	static let gravityDirectionX: String = "gravityDirectionX"
+	static let gravityDirectionY: String = "gravityDirectionY"
 
+}
+
+enum Constants {
+	static let maxDensity: CGFloat = 1
+	static let maxPushMagnitude: CGFloat = 8
+	static let minPushMagnitude: CGFloat = 0.5
+	static let gravityDirection: CGVector = CGVector(dx: 0, dy: 1)
+}
 
 
 

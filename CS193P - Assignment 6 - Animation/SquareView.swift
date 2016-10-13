@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//  BoardSquareView.swift
+//  SquareView.swift
 //  CS193P - Assignment 6 - Animation
 //
 //  Created by Michel Deiman on 20/08/2016.
@@ -8,10 +8,7 @@
 
 import UIKit
 
-
-typealias SquareView = BoardSquareView
-
-class BoardSquareView: UIView {
+class SquareView: UIView {
 	
 	var typeOfSquare: BoardSquareType? {
 		didSet {
@@ -40,8 +37,6 @@ class BoardSquareView: UIView {
 	}
 	
 	var letterView: LetterView?
-	var column: Int = 0		// no need for these
-	var row: Int = 0		// no  "	"	 "
 	
 	lazy var label: UILabel = {
 		let label = UILabel()
@@ -54,7 +49,6 @@ class BoardSquareView: UIView {
 	override func layoutSubviews() {
 		label.font = UIFont(name: label.font.fontName,
 		                    size: self.bounds.height * 0.45)
-		// set letterView...
 		letterView?.frame = CGRect(center: CGPoint(x: bounds.midX, y: bounds.midY), size: frame.size)
 	}
 	
@@ -81,7 +75,6 @@ class BoardSquareView: UIView {
 		}
 	}
 }
-
 
 class LetterView: UIView {
 
@@ -111,8 +104,6 @@ class LetterView: UIView {
 		letterLabel.textAlignment = .center
 		letterLabel.text = String((self.letterValue ?? 0)!)
 		letterLabel.textColor = letterColors["tekstValue"]
-		letterLabel.font = UIFont(name: letterLabel.font.fontName,
-		                          size: self.bounds.height * 0.26)
 		return letterLabel
 	}()
 	

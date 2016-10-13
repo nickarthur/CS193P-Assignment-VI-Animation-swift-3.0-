@@ -10,7 +10,7 @@ import UIKit
 
 class DynamicBehavior: UIDynamicBehavior {
 	
-	private let gravity = UIGravityBehavior()
+	let gravity = UIGravityBehavior()
 	
 	let collider: UICollisionBehavior = {
 		let collider = UICollisionBehavior()
@@ -18,19 +18,14 @@ class DynamicBehavior: UIDynamicBehavior {
 		return collider
 	}()
 	
-	private let itemBehavior: UIDynamicItemBehavior = {
+	let itemBehavior: UIDynamicItemBehavior = {
 		let itemBehavior = UIDynamicItemBehavior()
 		itemBehavior.allowsRotation = true
 		itemBehavior.elasticity = 0.75
+		itemBehavior.density = 0.1
 		return itemBehavior
 	}()
 	
-	private let pushBehavior: UIPushBehavior = {
-		let push = UIPushBehavior()
-		
-		return push
-	}()
-
 	func addBarrier(path: UIBezierPath, name: String) {
 		collider.removeBoundary(withIdentifier: name as NSCopying)
 		collider.addBoundary(withIdentifier: name as NSCopying, for: path)
