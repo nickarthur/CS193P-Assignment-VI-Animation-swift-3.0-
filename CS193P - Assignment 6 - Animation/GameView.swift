@@ -349,7 +349,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
 	
 	func collisionBehavior(_ behavior: UICollisionBehavior, beganContactFor item: UIDynamicItem, withBoundaryIdentifier identifier: NSCopying?, at p: CGPoint) {
 		if 	let name = identifier as? String , name.hasPrefix("squareView_"),
-			let view = topBoard.paths[identifier! as! String],
+			let view = topBoard.paths[name],
 			let letterView = view.letterView,
 			let slot = letterBoard.firstEmptySlot(isFor: letterView)
 		{
@@ -374,8 +374,7 @@ class GameView: UIView, UIDynamicAnimatorDelegate, UICollisionBehaviorDelegate, 
                         slot.addSubview(letterView)
                 }
             })
-			topBoard.paths[identifier! as! String] = nil
-			dynamicBehavior.collider.removeBoundary(withIdentifier: identifier!)
+
 		}
 	}
 	

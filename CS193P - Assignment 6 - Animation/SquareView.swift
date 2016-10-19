@@ -10,17 +10,11 @@ import UIKit
 
 class SquareView: UIView {
 	
-	var typeOfSquare: BoardSquareType? {
+	var typeOfSquare: BoardSquareType = .regular {
 		didSet {
-			guard let sguareType = typeOfSquare else { return }
-			self.backgroundColor = boardColors[sguareType.rawValue]
-			switch sguareType {
-			case .source:
-				letterView = LetterView()
-				self.addSubview(letterView!)
-			case .regular: break
-			default:
-				label.text = sguareType.rawValue
+			self.backgroundColor = boardColors[typeOfSquare.rawValue]
+			if typeOfSquare != .regular {
+				label.text = typeOfSquare.rawValue
 				addSubview(label)
 				setContraintsForLabel()
 			}
@@ -36,6 +30,7 @@ class SquareView: UIView {
 		label.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
 	}
 	
+	var id: String?
 	var letterView: LetterView?
 	
 	lazy var label: UILabel = {
@@ -60,7 +55,7 @@ class SquareView: UIView {
 		super.willRemoveSubview(subview)
 		if let letterView = self.letterView , letterView === subview,
 		let superview = self.superview as? BoardDelegate
-		{	superview.willClear(slot: self, with: letterView)
+		{	superview.willClear(slot: self, with: letterView, onGameBoard: nil)
 			self.letterView = nil
 		}
 	}
@@ -71,7 +66,7 @@ class SquareView: UIView {
 			let superview = self.superview as? BoardDelegate
 		{
 			self.letterView = letterView
-			superview.didFill(slot: self, with: letterView)
+			superview.didFill(slot: self, with: letterView, onGameBoard: nil)
 		}
 	}
 }

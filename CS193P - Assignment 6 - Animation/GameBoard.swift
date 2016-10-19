@@ -9,8 +9,9 @@
 import UIKit
 
 protocol BoardDelegate: class {
-	func willClear(slot: SquareView, with subview: UIView)
-	func didFill(slot: SquareView, with subview: UIView)
+	func willClear(slot: SquareView, with subview: UIView, onGameBoard: GameBoard?)
+	func didFill(slot: SquareView, with subview: UIView, onGameBoard: GameBoard?)
+	func viewFor(board: GameBoard, at slot: SquareView) -> UIView?
 }
 
 enum TypeOfBoard {
@@ -31,7 +32,7 @@ class GameBoard: UIView, BoardDelegate {
 			let centerV = CGPoint(x: baseCenter.x + CGFloat(index % squaresPerRow) * brickWide,
 			                      y: baseCenter.y + CGFloat(index / squaresPerRow) * brickHeight)
 			view.frame = CGRect(center: centerV, size: squareSize)
-			paths["squareView_" + String(index)] = (view as? SquareView)
+			paths[((view as? SquareView)?.id)!] = (view as? SquareView)
 		}
 	}
 	
@@ -49,13 +50,23 @@ class GameBoard: UIView, BoardDelegate {
 		return CGSize(width: width, height: height)
 	}
 	
+	private lazy var key: String = {
+		let key = Int.random(max: 100000)
+		return String(key)  + "_"
+	}()
+	
 	weak var dataSource: GameBoardDataSource? {
 		didSet {
 			backgroundColor = boardColors["backGround"]
 			cellValues = boardDimension(numberOfRows: numberOfRows, numberOfColumns: squaresPerRow)
 			for index in 1...numberOfRows * squaresPerRow {
 				let squareView = SquareView()
-				squareView.typeOfSquare = cellValues == nil ? .source : cellValues![index] ?? .regular
+				squareView.typeOfSquare = cellValues?[index] ?? .regular
+				squareView.id = "squareView_" + key + String(index - 1)
+				if let contentView = viewFor(board: self, at: squareView) {
+					squareView.letterView = contentView as? LetterView
+					squareView.addSubview(contentView)
+				}
 				addSubview(squareView)
 			}
 		}
@@ -68,14 +79,19 @@ class GameBoard: UIView, BoardDelegate {
 
 	weak var delegate: BoardDelegate?
 
-	func willClear(slot: SquareView, with subview: UIView) {
-		delegate?.willClear(slot: slot, with: subview)
-		print("willClear is called")
+	func willClear(slot: SquareView, with subview: UIView, onGameBoard: GameBoard?) {
+		delegate?.willClear(slot: slot, with: subview, onGameBoard: self)
+		print("willClear is called", typeOfBoard, delegate)
 	}
 	
-	func didFill(slot: SquareView, with subview: UIView) {
-		delegate?.didFill(slot: slot, with: subview)
-		print("didFill is called")
+	func didFill(slot: SquareView, with subview: UIView, onGameBoard: GameBoard?) {
+		delegate?.didFill(slot: slot, with: subview, onGameBoard: self)
+		print("didFill is called", typeOfBoard, delegate)
+	}
+	
+	func viewFor(board: GameBoard, at slot: SquareView) -> UIView? {
+		print(board.typeOfBoard, " id: ", slot.id)
+		return delegate?.viewFor(board: self, at: slot)
 	}
 	
 	var cellValues: CellValues?
@@ -87,39 +103,63 @@ class GameBoard: UIView, BoardDelegate {
 	var paths: [String: SquareView] = [:]
 }
 
-class LetterSourceBoard: GameBoard {
-	override var typeOfBoard: TypeOfBoard { return .letterSourceBoard }
+class DynamicBehaviorGameBoard: GameBoard {
 	
+	var dynamicBehavior: DynamicBehavior?
+
 	override func willMove(toSuperview newSuperview: UIView?) {
-		if let superView = newSuperview as? DynamicBehaviorDelegate, dataSource == nil
-		{	dataSource = superView
-			dynamicBehavior = superView.dynamicBehavior
+		super.willMove(toSuperview: newSuperview)
+		if let dataSource = dataSource as? DynamicBehaviorDelegate
+		{
+			dynamicBehavior = dataSource.dynamicBehavior
 		}
-	}
-	
-	override var numberOfRows: Int {
-		return dataSource?.topBoardNumberOfRows ?? 0
 	}
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		for (name, squareView) in paths {
-			dynamicBehavior?.addBarrier(path: UIBezierPath(rect: squareView.frame), name: name)
+			if squareView.letterView != nil {
+				let frameInSuperView = self.convert(squareView.frame, to: superview)
+				dynamicBehavior?.addBarrier(path: UIBezierPath(rect: frameInSuperView), name: name)
+				print("layoutSubviews ", squareView.id!, "  ",frameInSuperView)
+			}
 		}
 	}
 	
+	override func willClear(slot: SquareView, with subview: UIView, onGameBoard: GameBoard?) {
+		super.willClear(slot: slot, with: subview, onGameBoard: onGameBoard)
+		dynamicBehavior?.collider.removeBoundary(withIdentifier: slot.id! as NSCopying)
+		paths[slot.id!] = nil
+	}
+	
+	override func didFill(slot: SquareView, with subview: UIView, onGameBoard: GameBoard?) {
+		super.didFill(slot: slot, with: subview, onGameBoard: self)
+		let frameInSuperView = self.convert(slot.frame, to: superview)
+		dynamicBehavior?.addBarrier(path: UIBezierPath(rect: frameInSuperView), name: slot.id!)
+		print("didFill ", slot.id!)
+	}
+	
 	override func removeFromSuperview() {
-		for (_, squareView) in paths {
-			dynamicBehavior?.remove(item: squareView)
+		for (_, slot) in paths {
+			dynamicBehavior?.collider.removeBoundary(withIdentifier: slot.id! as NSCopying)
 		}
 		super.removeFromSuperview()
 	}
-
-	private var dynamicBehavior: DynamicBehavior?
 }
 
-class ScrabbleBoard: GameBoard {
+class LetterSourceBoard: DynamicBehaviorGameBoard {
+	override var typeOfBoard: TypeOfBoard { return .letterSourceBoard }
+
+	override var numberOfRows: Int { return dataSource?.topBoardNumberOfRows ?? 0 }
+	
+	override func viewFor(board: GameBoard, at slot: SquareView) -> UIView? {
+		return LetterView()
+	}
+}
+
+class ScrabbleBoard: DynamicBehaviorGameBoard {
 	override var typeOfBoard: TypeOfBoard { return .scrabbleBoard }
+	
 
 	 override func score() -> Int {
 		var filledSquares: [Int: Int] = [:]

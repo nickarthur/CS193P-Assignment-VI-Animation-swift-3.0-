@@ -15,7 +15,6 @@ let letterValues: [String: Int] = [
 		"X": 8, "Y": 4, "Z": 10]
 
 enum BoardSquareType: String {
-	case source = "source"
 	case regular = "regular"
 	case dl = "DL"
 	case tl = "TL"

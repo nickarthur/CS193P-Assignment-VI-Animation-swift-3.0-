@@ -13,13 +13,6 @@ class SettingsViewController: UITableViewController {
 
 	weak var dataSource: ControllerWithSettingsData?
 	
-	@IBOutlet weak var ColorSegmentedControl: UISegmentedControl!
-	
-	@IBAction func onColorSegmentedControl(_ sender: UISegmentedControl)
-	{
-	}
-	
-	
 	
 	@IBAction func setColor(_ sender: UIButton)
 	{
@@ -92,16 +85,6 @@ class SettingsViewController: UITableViewController {
 	}
 	
 	
-	@IBAction func setBricksPerRow(_ sender: UISegmentedControl) {
-	}
-
-	@IBAction func setNumberOfRows(_ sender: UISegmentedControl) {
-	}
-	
-	@IBOutlet weak var numberOfRowsCtrl: UISegmentedControl!
-	@IBOutlet weak var bricksPerRowCtrl: UISegmentedControl!
-
-	
     override func viewDidLoad() {
         super.viewDidLoad()
 		for vc in tabBarController!.viewControllers! {
@@ -133,7 +116,7 @@ class SettingsViewController: UITableViewController {
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 3
+        return 1
     }
 
 

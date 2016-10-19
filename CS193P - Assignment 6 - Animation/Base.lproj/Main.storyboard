@@ -236,162 +236,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections>
-                            <tableViewSection headerTitle="Colors" id="o4V-99-a6X">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="135" id="Y1I-Ok-NLn">
-                                        <rect key="frame" x="0.0" y="119.5" width="375" height="135"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Y1I-Ok-NLn" id="Phn-b6-yuk">
-                                            <frame key="frameInset" width="375" height="134.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="k6w-WD-jJl">
-                                                    <subviews>
-                                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8so-Sh-b04">
-                                                            <segments>
-                                                                <segment title="Bricks"/>
-                                                                <segment title="Paddle"/>
-                                                                <segment title="Ball"/>
-                                                            </segments>
-                                                            <connections>
-                                                                <action selector="onColorSegmentedControl:" destination="UXK-Hz-CUQ" eventType="valueChanged" id="5Q7-I1-JaA"/>
-                                                            </connections>
-                                                        </segmentedControl>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="0gM-hY-tch">
-                                                            <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGG-DF-rva">
-                                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="ZLn-JP-OGj"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BuL-0c-TTZ">
-                                                                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="LYc-T1-Tic"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BOQ-ep-R2H">
-                                                                    <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="EPc-iH-Ctq"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yAE-Gq-T54">
-                                                                    <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="n51-n9-Vgj"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZB9-Gj-Fs4">
-                                                                    <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="Til-tO-8qM"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hjA-zQ-O6n">
-                                                                    <color key="backgroundColor" red="0.80000001190000003" green="0.80000001190000003" blue="0.80000001190000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="gNS-QK-uBP"/>
-                                                                    </connections>
-                                                                </button>
-                                                            </subviews>
-                                                        </stackView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="O2D-hf-Aio">
-                                                            <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nUu-fz-z6F">
-                                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="orp-gk-S49"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2H9-QG-Z6S">
-                                                                    <color key="backgroundColor" red="0.40000000000000002" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="dqf-i6-jXn"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1X5-KV-Bsq">
-                                                                    <color key="backgroundColor" red="0.0" green="0.40000000000000002" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="Dvc-MT-UaB"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="74O-s3-Ktd">
-                                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="hwC-Qz-fWK"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dS4-OP-qBg">
-                                                                    <color key="backgroundColor" red="0.80000000000000004" green="0.59999999999999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="hWA-mo-2Ih"/>
-                                                                    </connections>
-                                                                </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dGY-MB-Oos">
-                                                                    <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <state key="normal">
-                                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    </state>
-                                                                    <connections>
-                                                                        <action selector="setColor:" destination="UXK-Hz-CUQ" eventType="touchUpInside" id="1id-FA-rED"/>
-                                                                    </connections>
-                                                                </button>
-                                                            </subviews>
-                                                        </stackView>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="k6w-WD-jJl" secondAttribute="trailing" id="NGG-xD-Ouu"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="k6w-WD-jJl" secondAttribute="bottom" id="TYG-Vr-2Dx"/>
-                                                <constraint firstItem="k6w-WD-jJl" firstAttribute="leading" secondItem="Phn-b6-yuk" secondAttribute="leadingMargin" id="a4W-Xd-ohm"/>
-                                                <constraint firstItem="k6w-WD-jJl" firstAttribute="top" secondItem="Phn-b6-yuk" secondAttribute="topMargin" id="djZ-7M-bgo"/>
-                                                <constraint firstItem="k6w-WD-jJl" firstAttribute="centerX" secondItem="Phn-b6-yuk" secondAttribute="centerX" id="te7-yA-oHJ"/>
-                                                <constraint firstItem="k6w-WD-jJl" firstAttribute="centerY" secondItem="Phn-b6-yuk" secondAttribute="centerY" id="vel-Ug-Bbm"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                             <tableViewSection headerTitle="Dynamics" id="tPj-A6-zEK">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="RVS-gn-d4L">
-                                        <rect key="frame" x="0.0" y="310.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="119.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RVS-gn-d4L" id="j42-pK-SP6">
                                             <frame key="frameInset" width="375" height="49.5"/>
@@ -413,7 +261,7 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="vaF-nB-FGw">
-                                        <rect key="frame" x="0.0" y="360.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="169.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vaF-nB-FGw" id="WhL-VI-w2A">
                                             <frame key="frameInset" width="375" height="49.5"/>
@@ -444,7 +292,7 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="35" id="obM-XZ-4ou">
-                                        <rect key="frame" x="0.0" y="410.5" width="375" height="35"/>
+                                        <rect key="frame" x="0.0" y="219.5" width="375" height="35"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="obM-XZ-4ou" id="8dC-Fb-62l">
                                             <frame key="frameInset" width="375" height="34.5"/>
@@ -454,7 +302,7 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="2FB-Mk-7Wg">
-                                        <rect key="frame" x="0.0" y="445.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="254.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2FB-Mk-7Wg" id="BuB-XP-vT4">
                                             <frame key="frameInset" width="375" height="49.5"/>
@@ -476,7 +324,7 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="gPj-HT-eHq">
-                                        <rect key="frame" x="0.0" y="495.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="304.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gPj-HT-eHq" id="11j-bd-LHn">
                                             <frame key="frameInset" width="375" height="49.5"/>
@@ -507,7 +355,7 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="35" id="kIn-c8-ld7">
-                                        <rect key="frame" x="0.0" y="545.5" width="375" height="35"/>
+                                        <rect key="frame" x="0.0" y="354.5" width="375" height="35"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kIn-c8-ld7" id="4HG-0M-fdx">
                                             <frame key="frameInset" width="375" height="34.5"/>
@@ -517,10 +365,10 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="F2a-cB-P2Z">
-                                        <rect key="frame" x="0.0" y="580.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="389.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F2a-cB-P2Z" id="0EG-Vn-8Za">
-                                            <frame key="frameInset" width="375" height="49"/>
+                                            <frame key="frameInset" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BPY-cb-u8p">
@@ -549,10 +397,10 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="fFr-k5-3ao">
-                                        <rect key="frame" x="0.0" y="630.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="439.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fFr-k5-3ao" id="J39-3m-MzV">
-                                            <frame key="frameInset" width="375" height="49"/>
+                                            <frame key="frameInset" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1.5" maxValue="1.5" minimumValueImage="X@0.6x" maximumValueImage="X" translatesAutoresizingMaskIntoConstraints="NO" id="uW0-fv-sAW">
@@ -572,10 +420,10 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="J3C-JG-5pP">
-                                        <rect key="frame" x="0.0" y="680.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="489.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="J3C-JG-5pP" id="1VI-8X-bM1">
-                                            <frame key="frameInset" width="375" height="49"/>
+                                            <frame key="frameInset" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <slider opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="-1.5" maxValue="1.5" minimumValueImage="Y@0.6x" maximumValueImage="Y" translatesAutoresizingMaskIntoConstraints="NO" id="sdx-3X-fqV">
@@ -595,10 +443,10 @@
                                         <gestureRecognizers/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="9VO-3g-K3E">
-                                        <rect key="frame" x="0.0" y="730.5" width="375" height="50"/>
+                                        <rect key="frame" x="0.0" y="539.5" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9VO-3g-K3E" id="2Cv-kc-u4Q">
-                                            <frame key="frameInset" width="375" height="49"/>
+                                            <frame key="frameInset" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="35" translatesAutoresizingMaskIntoConstraints="NO" id="Keb-Kn-5OD">
@@ -619,7 +467,7 @@
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZiJ-nv-8LZ">
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Vector Y: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42m-Ji-mqR">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Vector Y: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42m-Ji-mqR">
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -646,93 +494,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Bricks 'n Mortar" id="TQ6-dF-M8Z">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="89" id="4lF-AY-NOg">
-                                        <rect key="frame" x="0.0" y="836.5" width="375" height="89"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4lF-AY-NOg" id="pw1-oM-o1a">
-                                            <frame key="frameInset" width="375" height="88.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="d7G-tL-VPY">
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bricks per row" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nZD-sf-bO6">
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="UVJ-Dy-vUZ">
-                                                            <segments>
-                                                                <segment title="4"/>
-                                                                <segment title="5"/>
-                                                                <segment title="6"/>
-                                                                <segment title="7"/>
-                                                                <segment title="8"/>
-                                                            </segments>
-                                                            <connections>
-                                                                <action selector="setBricksPerRow:" destination="UXK-Hz-CUQ" eventType="valueChanged" id="oJt-Zy-I8W"/>
-                                                            </connections>
-                                                        </segmentedControl>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="d7G-tL-VPY" firstAttribute="leading" secondItem="pw1-oM-o1a" secondAttribute="leadingMargin" id="8ZN-BL-5cf"/>
-                                                <constraint firstItem="d7G-tL-VPY" firstAttribute="top" secondItem="pw1-oM-o1a" secondAttribute="topMargin" id="LSk-tz-5Jb"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="d7G-tL-VPY" secondAttribute="bottom" id="Ttj-rE-5TZ"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="d7G-tL-VPY" secondAttribute="trailing" id="dtV-6e-wKE"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="89" id="iAP-N4-6sx">
-                                        <rect key="frame" x="0.0" y="925.5" width="375" height="89"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iAP-N4-6sx" id="6kw-Wj-Ksy">
-                                            <frame key="frameInset" width="375" height="88.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="qhK-Kl-kt8">
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of rows" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mvW-gG-nwx">
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="fbW-02-jMs">
-                                                            <segments>
-                                                                <segment title="2"/>
-                                                                <segment title="3"/>
-                                                                <segment title="4"/>
-                                                                <segment title="5"/>
-                                                                <segment title="6"/>
-                                                            </segments>
-                                                            <connections>
-                                                                <action selector="setNumberOfRows:" destination="UXK-Hz-CUQ" eventType="valueChanged" id="pRa-8g-noz"/>
-                                                            </connections>
-                                                        </segmentedControl>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="qhK-Kl-kt8" firstAttribute="leading" secondItem="6kw-Wj-Ksy" secondAttribute="leadingMargin" id="KOQ-Mp-nS5"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="qhK-Kl-kt8" secondAttribute="bottom" id="jQT-5b-W1W"/>
-                                                <constraint firstItem="qhK-Kl-kt8" firstAttribute="top" secondItem="6kw-Wj-Ksy" secondAttribute="topMargin" id="pRW-2L-N6O"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="qhK-Kl-kt8" secondAttribute="trailing" id="uys-qn-eoJ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="6Pl-NM-7nm">
-                                        <rect key="frame" x="0.0" y="1014.5" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Pl-NM-7nm" id="gI1-w9-tsO">
-                                            <frame key="frameInset" width="375" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <color key="tintColor" red="0.9093970656" green="0.00091595225970000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="UXK-Hz-CUQ" id="VD6-R7-C7P"/>
@@ -741,7 +502,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="ZKx-RH-wtA"/>
                     <connections>
-                        <outlet property="ColorSegmentedControl" destination="8so-Sh-b04" id="aqG-ZT-BuS"/>
                         <outlet property="densitySlider" destination="knL-ww-v92" id="rG2-jv-33z"/>
                         <outlet property="densityValueLabel" destination="jNo-X3-8lO" id="jUO-2A-nqQ"/>
                         <outlet property="gravitySwitch" destination="hqO-cc-NaX" id="eYa-QO-yxB"/>
